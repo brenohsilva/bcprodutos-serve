@@ -1,13 +1,24 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ProductsService } from '../products.service';
 
 @Injectable()
 export class GetAllProductsUseCase {
-    constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) {}
 
-    execute(){
-        const products = this.productsService.findAll()
-        return products
+  async execute() {
+    try {
+      const products = await this.productsService.findAll();
+
+      return {
+        success: true,
+        data: products,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Erro ao buscar os produtos. Tente novamente mais tarde.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
+  }
 }

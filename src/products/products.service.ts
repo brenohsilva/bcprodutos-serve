@@ -13,19 +13,25 @@ export class ProductsService {
   }
 
   async findAll() {
-      return await this.prisma.product.findMany()
-
+    return await this.prisma.product.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    return await this.prisma.product.findUnique({
+      where: {id}
+    });
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, data: UpdateProductDto) {
+    return await this.prisma.product.update({
+      where: { id },
+      data,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+    return await this.prisma.product.delete({
+      where:{id}
+    });
   }
 }

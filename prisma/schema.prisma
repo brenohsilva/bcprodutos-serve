@@ -1,0 +1,65 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id            Int             @id @default(autoincrement())
+  name          String
+  category      String
+  size          Float?
+  type          String?
+  color         String?
+  amount        Int
+  image         String?
+  salesPrice    Float
+  shoppingItens ShoppingItens[]
+  salesItens    SalesItens[]
+}
+
+model Shopping {
+  id           Int             @id @default(autoincrement())
+  shoppingDate DateTime        @default(now())
+  totalValue   Float
+  itens        ShoppingItens[]
+}
+
+model ShoppingItens {
+  id         Int   @id @default(autoincrement())
+  shoppingId Int
+  productId  Int
+  amount     Int
+  unitPrice  Float
+  subtotal   Float
+
+  shopping Shopping @relation(fields: [shoppingId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+
+  @@unique([shoppingId, productId])
+}
+
+model Sales {
+  id         Int          @id @default(autoincrement())
+  client     String
+  totalValue Float
+  salesDate  DateTime     @default(now())
+  itens      SalesItens[]
+}
+
+model SalesItens {
+  id        Int   @id @default(autoincrement())
+  salesId   Int
+  productId Int
+  amount    Int
+  unitPrice Float
+  subtotal  Float
+
+  sales   Sales   @relation(fields: [salesId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([salesId, productId])
+}

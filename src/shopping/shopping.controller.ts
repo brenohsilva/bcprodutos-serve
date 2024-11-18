@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ShoppingService } from './shopping.service';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
+import { CreateShoppingUseCase } from './usecases/createShopping';
 
 @Controller('shopping')
 export class ShoppingController {
-  constructor(private readonly shoppingService: ShoppingService) {}
+  constructor(private readonly shoppingService: ShoppingService, private readonly createShopping: CreateShoppingUseCase) {}
 
   @Post()
-  create(@Body() createShoppingDto: CreateShoppingDto) {
-    return this.shoppingService.create(createShoppingDto);
+   create(@Body() data: CreateShoppingDto) {
+    return this.createShopping.execute(data);
   }
 
   @Get()

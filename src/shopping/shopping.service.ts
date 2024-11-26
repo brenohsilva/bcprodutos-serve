@@ -46,18 +46,30 @@ export class ShoppingService {
   }
 
   async findAll() {
-    return this.prisma.shopping.findMany();
+    return this.prisma.shopping.findMany({
+      include: {
+        itens: true
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shopping`;
+  async findOne(id: number) {
+    return await this.prisma.shopping.findUnique({
+      where: {
+        id
+      }, include: {
+        itens: true
+      }
+    })
   }
 
   update(id: number, updateShoppingDto: UpdateShoppingDto) {
     return `This action updates a #${id} shopping`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shopping`;
+  async remove(id: number) {
+    return await this.prisma.shopping.delete({
+      where: {id}
+    });
   }
 }

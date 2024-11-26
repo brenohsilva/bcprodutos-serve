@@ -3,10 +3,11 @@ import { ShoppingService } from './shopping.service';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
 import { CreateShoppingUseCase } from './usecases/createShopping';
+import { GetAllShoppingUseCase } from './usecases/getAllShopping';
 
 @Controller('shopping')
 export class ShoppingController {
-  constructor(private readonly shoppingService: ShoppingService, private readonly createShopping: CreateShoppingUseCase) {}
+  constructor(private readonly shoppingService: ShoppingService, private readonly createShopping: CreateShoppingUseCase, private readonly getAllShopping: GetAllShoppingUseCase) {}
 
   @Post()
    create(@Body() data: CreateShoppingDto) {
@@ -15,7 +16,7 @@ export class ShoppingController {
 
   @Get()
   findAll() {
-    return this.shoppingService.findAll();
+    return this.getAllShopping.execute();
   }
 
   @Get(':id')

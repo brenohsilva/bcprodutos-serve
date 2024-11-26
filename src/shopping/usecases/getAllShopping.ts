@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ShoppingService } from '../shopping.service';
 
 @Injectable()
-export class GetAllProductsUseCase {
+export class GetAllShoppingUseCase {
   constructor(private readonly shoppingService: ShoppingService) {}
 
   async execute() {

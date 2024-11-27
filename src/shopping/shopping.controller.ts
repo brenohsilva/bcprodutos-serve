@@ -4,10 +4,11 @@ import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
 import { CreateShoppingUseCase } from './usecases/createShopping';
 import { GetAllShoppingUseCase } from './usecases/getAllShopping';
+import { GetOneShoppingUseCase } from './usecases/getOneShopping';
 
 @Controller('shopping')
 export class ShoppingController {
-  constructor(private readonly shoppingService: ShoppingService, private readonly createShopping: CreateShoppingUseCase, private readonly getAllShopping: GetAllShoppingUseCase) {}
+  constructor(private readonly shoppingService: ShoppingService, private readonly createShopping: CreateShoppingUseCase, private readonly getAllShopping: GetAllShoppingUseCase, private readonly getOneShopping: GetOneShoppingUseCase) {}
 
   @Post()
    create(@Body() data: CreateShoppingDto) {
@@ -21,7 +22,7 @@ export class ShoppingController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.shoppingService.findOne(+id);
+    return this.getOneShopping.execute(id);
   }
 
   @Patch(':id')

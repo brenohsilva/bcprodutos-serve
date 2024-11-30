@@ -104,9 +104,19 @@ export class ShoppingService {
     return `shopping updated successfully`;
   }
 
-  async remove(id: number) {
-    return await this.prisma.shopping.delete({
-      where: { id },
-    });
+  async remove(shoppingId: number) {
+    const deleteShoppingItens = this.prisma.shoppingItens.deleteMany({
+      where: {
+        shoppingId
+      }
+    })
+    const deleteShopping = this.prisma.shopping.delete({
+      where: {
+        id: shoppingId
+      }
+    })
+    this.prisma.$transaction([deleteShoppingItens, deleteShopping])
+    
+    return 'shopping deleted successfully';
   }
 }

@@ -14,6 +14,7 @@ import { CreateShoppingUseCase } from './usecases/createShopping';
 import { GetAllShoppingUseCase } from './usecases/getAllShopping';
 import { GetOneShoppingUseCase } from './usecases/getOneShopping';
 import { UpdateShoppingUseCase } from './usecases/updateShopping';
+import { DeleteShoppingUseCase } from './usecases/deleteShopping';
 
 @Controller('shopping')
 export class ShoppingController {
@@ -22,7 +23,8 @@ export class ShoppingController {
     private readonly createShopping: CreateShoppingUseCase,
     private readonly getAllShopping: GetAllShoppingUseCase,
     private readonly getOneShopping: GetOneShoppingUseCase,
-    private readonly updateShopping: UpdateShoppingUseCase
+    private readonly updateShopping: UpdateShoppingUseCase,
+    private readonly deleteShopping: DeleteShoppingUseCase
   ) {}
 
   @Post()
@@ -50,6 +52,6 @@ export class ShoppingController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.shoppingService.remove(+id);
+    return this.deleteShopping.execute(id);
   }
 }

@@ -1,7 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ProductsService } from '../products.service';
-import { UpdateProductDto } from '../dto/update-product.dto';
-import { Prisma } from '@prisma/client';
 import { GetOneProductUseCase } from './getOneProduct';
 
 @Injectable()

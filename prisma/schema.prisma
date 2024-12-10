@@ -44,7 +44,7 @@ model ShoppingItens {
 
 model Sales {
   id         Int          @id @default(autoincrement())
-  client     String
+  client     String?
   totalValue Float
   salesDate  DateTime     @default(now())
   itens      SalesItens[]

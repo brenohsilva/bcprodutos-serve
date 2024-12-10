@@ -1,4 +1,19 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateSaleDto } from './create-sale.dto';
+import { CreateSalesDto } from './create-sale.dto';
 
-export class UpdateSaleDto extends PartialType(CreateSaleDto) {}
+
+
+export class SalesItensUpdate {
+    id: number;
+    productId: number | string;
+    amount: number;
+    unitPrice: number;
+}
+export class UpdateSalesDto extends PartialType(CreateSalesDto) {
+    salesDate: Date;
+    totalValue: number;
+    itens: SalesItensUpdate[];
+    
+}
+
+

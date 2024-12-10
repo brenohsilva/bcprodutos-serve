@@ -4,7 +4,7 @@ import { SalesService } from '../sales.service';
 
 
 @Injectable()
-export class GetAllShoppingUseCase {
+export class GetAllSalesUseCase {
   constructor(private readonly salesService: SalesService) {}
 
   async execute() {

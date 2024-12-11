@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { SalesService } from '../Sales.service';
+
 import { PrismaService } from 'src/prisma.service';
+import { SalesService } from '../sales.service';
 import { CreateSalesDto } from '../dto/create-sale.dto';
 
 
 @Injectable()
-export class CreateSalesUseCase {
-  constructor(private readonly SalesService: SalesService, private prisma: PrismaService) {}
+export class CreateSaleUseCase {
+  constructor(private readonly salesService: SalesService, private prisma: PrismaService) {}
 
   async execute(data: CreateSalesDto) {
     try {
@@ -25,7 +26,7 @@ export class CreateSalesUseCase {
               );
         }
 
-        const Sales = this.SalesService.create(data)
+        const shopping = this.salesService.create(data)
 
         return {
             success: true,

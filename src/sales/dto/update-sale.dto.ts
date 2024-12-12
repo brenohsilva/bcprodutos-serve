@@ -11,7 +11,6 @@ export class SalesItensUpdate {
 }
 export class UpdateSalesDto extends PartialType(CreateSalesDto) {
     salesDate: Date;
-    totalValue: number;
     itens: SalesItensUpdate[];
     
 }

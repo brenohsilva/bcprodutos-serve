@@ -3,11 +3,10 @@ import { UpdateSalesDto } from './dto/update-sale.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateSalesDto } from './dto/create-sale.dto';
 
-
 @Injectable()
 export class SalesService {
   constructor(private prisma: PrismaService) {}
-  
+
   async create(data: CreateSalesDto) {
     try {
       const sales = await this.prisma.sales.create({
@@ -62,7 +61,6 @@ export class SalesService {
   }
 
   async update(id: number, data: UpdateSalesDto) {
-    
     const salesData = await this.prisma.sales.update({
       where: { id },
       data: {
@@ -70,53 +68,55 @@ export class SalesService {
         totalValue: data.totalValue,
       },
     });
-
-    for (const item of data.itens) {
-      if (item.id) {
-        const response = await this.prisma.salesItens.update({
-          where: { id: item.id },
-          data: {
-            amount: item.amount,
-            unitPrice: item.unitPrice,
-            subtotal: item.amount * item.unitPrice,
-          },
-        });
-      } else {
-        await this.prisma.salesItens.create({
-          data: {
-            salesId: id,
-            productId: Number(item.productId),
-            amount: item.amount,
-            unitPrice: item.unitPrice,
-            subtotal: item.amount * item.unitPrice,
-          },
-        });
+    if (data.itens) {
+      for (const item of data.itens) {
+        if (item.id) {
+          const response = await this.prisma.salesItens.update({
+            where: { id: item.id },
+            data: {
+              amount: item.amount,
+              unitPrice: item.unitPrice,
+              subtotal: item.amount * item.unitPrice,
+            },
+          });
+        } else {
+          await this.prisma.salesItens.create({
+            data: {
+              salesId: id,
+              productId: Number(item.productId),
+              amount: item.amount,
+              unitPrice: item.unitPrice,
+              subtotal: item.amount * item.unitPrice,
+            },
+          });
+        }
       }
+
+      const itemIds = data.itens.map((item) => item.id).filter(Boolean);
+      await this.prisma.salesItens.deleteMany({
+        where: {
+          salesId: id,
+          id: { notIn: itemIds },
+        },
+      });
     }
-    const itemIds = data.itens.map((item) => item.id).filter(Boolean);
-    await this.prisma.salesItens.deleteMany({
+
+    return `sales updated successfully`;
+  }
+
+  async remove(salesId: number) {
+    const deletesalesItens = this.prisma.salesItens.deleteMany({
       where: {
-        salesId: id,
-        id: { notIn: itemIds },
+        salesId,
       },
     });
-    
-  return `sales updated successfully`;
-}
+    const deletesales = this.prisma.sales.delete({
+      where: {
+        id: salesId,
+      },
+    });
+    this.prisma.$transaction([deletesalesItens, deletesales]);
 
-async remove(salesId: number) {
-  const deletesalesItens = this.prisma.salesItens.deleteMany({
-    where: {
-      salesId
-    }
-  })
-  const deletesales = this.prisma.sales.delete({
-    where: {
-      id: salesId
-    }
-  })
-  this.prisma.$transaction([deletesalesItens, deletesales])
-  
-  return 'sales deleted successfully';
-}
+    return 'sales deleted successfully';
+  }
 }

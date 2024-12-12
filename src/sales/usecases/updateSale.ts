@@ -10,7 +10,7 @@ export class UpdateSaleUseCase {
 
   async execute(id: string, data: UpdateSalesDto, ) {
     try {
-
+      
         const existingSale = await this.prisma.sales.findUnique({
             where: {id: Number(id)},
             include: { itens: true },
@@ -19,11 +19,10 @@ export class UpdateSaleUseCase {
           if (!existingSale) {
             throw new HttpException('Venda não encontrada.', HttpStatus.NOT_FOUND);
           }
-
-      const updatedSales = await this.salesService.update(Number(id), data);
+      const updatedSales = this.salesService.update(Number(id), data);
       return {
         success: true,
-        data: existingSale,
+        data: updatedSales,
       };
     } catch (error) {
       if (error instanceof HttpException) {

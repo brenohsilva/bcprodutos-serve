@@ -10,11 +10,11 @@ import {
 import { ShoppingService } from './shopping.service';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
-import { CreateShoppingUseCase } from './usecases/createShopping';
-import { GetAllShoppingUseCase } from './usecases/getAllShopping';
-import { GetOneShoppingUseCase } from './usecases/getOneShopping';
-import { UpdateShoppingUseCase } from './usecases/updateShopping';
-import { DeleteShoppingUseCase } from './usecases/deleteShopping';
+import { CreateShoppingUseCase } from './usecases/create-shopping.usecase';
+import { GetAllShoppingUseCase } from './usecases/get-all-shopping.usecase';
+import { GetOneShoppingUseCase } from './usecases/get-one-shopping.usecase';
+import { UpdateShoppingUseCase } from './usecases/update-shopping.usecase';
+import { DeleteShoppingUseCase } from './usecases/delete-shopping.usecase';
 
 @Controller('shopping')
 export class ShoppingController {

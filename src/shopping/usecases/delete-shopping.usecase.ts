@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ShoppingService } from '../shopping.service';
-import { GetOneShoppingUseCase } from './getOneShopping';
+import { GetOneShoppingUseCase } from './get-one-shopping.usecase';
 
 @Injectable()
 export class DeleteShoppingUseCase {

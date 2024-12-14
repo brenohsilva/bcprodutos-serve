@@ -3,11 +3,11 @@ import { Module } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
 import { PrismaService } from 'src/prisma.service';
-import { GetAllProductsUseCase } from './usecases/getAllProducts';
-import { AddProductsUseCase } from './usecases/addProducts';
-import { GetOneProductUseCase } from './usecases/getOneProduct';
-import { DeleteProductsUseCase } from './usecases/deleteProduct';
-import { UpdateProductsUseCase } from './usecases/updateProducts';
+import { GetAllProductsUseCase } from './usecases/get-all-products.usecase';
+import { AddProductsUseCase } from './usecases/add-products.usecase';
+import { GetOneProductUseCase } from './usecases/get-one-product.usecase';
+import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
+import { UpdateProductsUseCase } from './usecases/update-products.usecase';
 
 @Module({
   controllers: [ProductsController],

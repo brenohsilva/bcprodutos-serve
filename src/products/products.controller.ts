@@ -11,11 +11,11 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { GetAllProductsUseCase } from './usecases/getAllProducts';
-import { AddProductsUseCase } from './usecases/addProducts';
-import { GetOneProductUseCase } from './usecases/getOneProduct';
-import { UpdateProductsUseCase } from './usecases/updateProducts';
-import { DeleteProductsUseCase } from './usecases/deleteProduct';
+import { GetAllProductsUseCase } from './usecases/get-all-products.usecase';
+import { AddProductsUseCase } from './usecases/add-products.usecase';
+import { GetOneProductUseCase } from './usecases/get-one-product.usecase';
+import { UpdateProductsUseCase } from './usecases/update-products.usecase';
+import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
 
 @Controller('products')
 export class ProductsController {

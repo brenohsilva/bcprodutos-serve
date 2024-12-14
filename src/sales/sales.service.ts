@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateSalesDto } from './dto/update-sale.dto';
 import { PrismaService } from 'src/prisma.service';

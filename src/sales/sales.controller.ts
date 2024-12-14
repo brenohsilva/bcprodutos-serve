@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SalesService } from './sales.service';
 
-import { GetAllSalesUseCase } from './usecases/getAllSales';
-import { GetOneSaleUseCase } from './usecases/getOneSale';
+import { GetAllSalesUseCase } from './usecases/get-all-sales.usecase';
+import { GetOneSaleUseCase } from './usecases/get-one-sale.usecase';
 
-import { DeleteSaleUseCase } from './usecases/deleteSale';
+import { DeleteSaleUseCase } from './usecases/delete-sales.usecase';
 import { CreateSalesDto } from './dto/create-sale.dto';
 import { UpdateSalesDto } from './dto/update-sale.dto';
-import { CreateSaleUseCase } from './usecases/createSales';
-import { UpdateSaleUseCase } from './usecases/updateSale';
+import { CreateSaleUseCase } from './usecases/create-sales.usecase';
+import { UpdateSaleUseCase } from './usecases/update-sales.usecase';
 
 
 @Controller('sales')

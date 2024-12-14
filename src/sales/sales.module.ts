@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { SalesController } from './sales.controller';
-import { CreateSaleUseCase } from './usecases/createSales';
+import { CreateSaleUseCase } from './usecases/create-sales.usecase';
 
-import { GetAllSalesUseCase } from './usecases/getAllSales';
-import { GetOneSaleUseCase } from './usecases/getOneSale';
+import { GetAllSalesUseCase } from './usecases/get-all-sales.usecase';
+import { GetOneSaleUseCase } from './usecases/get-one-sale.usecase';
 import { PrismaService } from 'src/prisma.service';
-import { DeleteSaleUseCase } from './usecases/deleteSale';
-import { UpdateSaleUseCase } from './usecases/updateSale';
+import { DeleteSaleUseCase } from './usecases/delete-sales.usecase';
+import { UpdateSaleUseCase } from './usecases/update-sales.usecase';
 
 
 @Module({

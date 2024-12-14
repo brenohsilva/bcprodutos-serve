@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { SalesService } from '../sales.service';
-import { GetOneSaleUseCase } from './getOneSale';
+import { GetOneSaleUseCase } from './get-one-sale.usecase';
 
 
 @Injectable()

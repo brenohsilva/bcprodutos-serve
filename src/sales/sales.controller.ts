@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SalesService } from './sales.service';
 
 import { GetAllSalesUseCase } from './usecases/get-all-sales.usecase';
@@ -9,7 +17,7 @@ import { CreateSalesDto } from './dto/create-sale.dto';
 import { UpdateSalesDto } from './dto/update-sale.dto';
 import { CreateSaleUseCase } from './usecases/create-sales.usecase';
 import { UpdateSaleUseCase } from './usecases/update-sales.usecase';
-
+import { GetTotalSalesByWeekUseCase } from './usecases/get-total-sales-by-week.usecase';
 
 @Controller('sales')
 export class SalesController {
@@ -18,7 +26,8 @@ export class SalesController {
     private readonly getOneSales: GetOneSaleUseCase,
     private readonly deleteSales: DeleteSaleUseCase,
     private readonly createSales: CreateSaleUseCase,
-    private readonly updateSales: UpdateSaleUseCase
+    private readonly updateSales: UpdateSaleUseCase,
+    private readonly getTotalSalesByWeek: GetTotalSalesByWeekUseCase,
   ) {}
 
   @Post()
@@ -31,10 +40,17 @@ export class SalesController {
     return this.getAllSales.execute();
   }
 
+  @Get('/week')
+  findAllByWeek() {
+    return this.getTotalSalesByWeek.execute();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.getOneSales.execute(id);
   }
+
+  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSaleDto: UpdateSalesDto) {

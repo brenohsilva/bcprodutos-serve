@@ -61,6 +61,21 @@ export class SalesService {
     });
   }
 
+  async findSalesByWeek(beginning: any, end: any){
+    const total = await this.prisma.sales.aggregate({
+      _sum:{
+        totalValue: true
+      },
+      where: {
+        salesDate: {
+          gte: beginning,
+          lte: end
+        }
+      }
+    })
+    return total._sum.totalValue || 0
+  }
+
   async update(id: number, data: UpdateSalesDto) {
     const salesData = await this.prisma.sales.update({
       where: { id },

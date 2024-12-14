@@ -61,19 +61,43 @@ export class SalesService {
     });
   }
 
-  async findSalesByWeek(beginning: any, end: any){
+  async getTotalValueSalesByPeriod(beginning: Date, end: Date) {
     const total = await this.prisma.sales.aggregate({
-      _sum:{
-        totalValue: true
+      _sum: {
+        totalValue: true,
       },
       where: {
         salesDate: {
           gte: beginning,
-          lte: end
-        }
-      }
-    })
-    return total._sum.totalValue || 0
+          lte: end,
+        },
+      },
+    });
+    return total._sum.totalValue || 0;
+  }
+
+  async getTotalValueSales() {
+    const total = await this.prisma.sales.aggregate({
+      _sum: {
+        totalValue: true,
+      },
+    });
+    return total._sum.totalValue;
+  }
+
+  async getTotalSalesByPeriod(beginning: Date, end: Date) {
+    return await this.prisma.sales.count({
+      where: {
+        salesDate: {
+          gte: beginning,
+          lte: end,
+        },
+      },
+    });
+  }
+
+  async getTotalSales() {
+    return await this.prisma.sales.count();
   }
 
   async update(id: number, data: UpdateSalesDto) {

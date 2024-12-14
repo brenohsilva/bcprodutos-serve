@@ -3,24 +3,26 @@ import { SalesService } from './sales.service';
 import { SalesController } from './sales.controller';
 import { CreateSaleUseCase } from './usecases/create-sales.usecase';
 
-import { GetAllSalesUseCase } from './usecases/get-all-sales.usecase';
-import { GetOneSaleUseCase } from './usecases/get-one-sale.usecase';
 import { PrismaService } from 'src/prisma.service';
 import { DeleteSaleUseCase } from './usecases/delete-sales.usecase';
 import { UpdateSaleUseCase } from './usecases/update-sales.usecase';
-import { GetTotalSalesByWeekUseCase } from './usecases/get-total-sales-by-week.usecase';
+import { GetTotalValueSalesByPeriodUseCase } from './usecases/get-total-values-sales-by-period.usecase';
+import { FindAllSalesUseCase } from './usecases/find-all-sales.usecase';
+import { FindOneSaleUseCase } from './usecases/find-one-sale.usecase';
+import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
 
 @Module({
   controllers: [SalesController],
   providers: [
     SalesService,
     PrismaService,
-    GetAllSalesUseCase,
-    GetOneSaleUseCase,
+    FindAllSalesUseCase,
+    FindOneSaleUseCase,
     DeleteSaleUseCase,
     CreateSaleUseCase,
     UpdateSaleUseCase,
-    GetTotalSalesByWeekUseCase,
+    GetTotalValueSalesByPeriodUseCase,
+    GetTotalSalesByPeriodUseCase,
   ],
 })
 export class SalesModule {}

@@ -1,11 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { SalesService } from '../sales.service';
-import { GetOneSaleUseCase } from './get-one-sale.usecase';
-
+import { FindOneSaleUseCase } from './find-one-sale.usecase';
 
 @Injectable()
 export class DeleteSaleUseCase {
-  constructor(private readonly salesService: SalesService, private readonly getASale: GetOneSaleUseCase) {}
+  constructor(
+    private readonly salesService: SalesService,
+    private readonly getASale: FindOneSaleUseCase,
+  ) {}
 
   async execute(id: string) {
     try {
@@ -13,12 +15,12 @@ export class DeleteSaleUseCase {
       if (!existingShopping) {
         throw new HttpException('Venda não encontrada.', HttpStatus.NOT_FOUND);
       }
-     
+
       const deleteProduct = await this.salesService.remove(Number(id));
 
       return {
         success: true,
-        data: "Sales deleted successfully",
+        data: 'Sales deleted successfully',
       };
     } catch (error) {
       throw new HttpException(

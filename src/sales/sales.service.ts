@@ -100,6 +100,68 @@ export class SalesService {
     return await this.prisma.sales.count();
   }
 
+  async findTotalSalesByProduct(productId: number): Promise<number> {
+    const total = await this.prisma.salesItens.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        productId: productId,
+      },
+    });
+  
+    return total._sum.amount || 0;
+  }
+  
+  async findTotalSalesValueByProduct(productId: number): Promise<number> {
+    const total = await this.prisma.salesItens.aggregate({
+      _sum: {
+        subtotal: true,
+      },
+      where: {
+        productId: productId,
+      },
+    });
+  
+    return total._sum.subtotal || 0;
+  }
+
+  async findTotalSalesProductByPeriod(productId: number, beginning: Date, end: Date){
+    const total = await this.prisma.salesItens.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        productId,
+        sales: {
+          salesDate: {
+            gte: beginning,
+            lte: end
+          }
+        }
+      }
+    })
+    return total._sum.amount || 0
+  }
+
+  async findTotalSalesValueProductByPeriod(productId: number, beginning: Date, end: Date){
+    const total = await this.prisma.salesItens.aggregate({
+      _sum: {
+        subtotal: true,
+      },
+      where: {
+        productId,
+        sales: {
+          salesDate: {
+            gte: beginning,
+            lte: end
+          }
+        }
+      }
+    })
+    return total._sum.subtotal || 0
+  }
+
   async update(id: number, data: UpdateSalesDto) {
     const salesData = await this.prisma.sales.update({
       where: { id },

@@ -18,6 +18,9 @@ import { CreateSaleUseCase } from './usecases/create-sales.usecase';
 import { UpdateSaleUseCase } from './usecases/update-sales.usecase';
 import { GetTotalValueSalesByPeriodUseCase } from './usecases/get-total-values-sales-by-period.usecase';
 import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
+import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
+import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
+
 
 @Controller('sales')
 export class SalesController {
@@ -29,6 +32,8 @@ export class SalesController {
     private readonly updateSales: UpdateSaleUseCase,
     private readonly getTotalValueSalesByPeriod: GetTotalValueSalesByPeriodUseCase,
     private readonly getTotalSalesByPeriod: GetTotalSalesByPeriodUseCase,
+    private readonly getTotalSalesProductsByPeriod: GetTotalSalesProductsByPeriodUseCase,
+    private readonly getTotalSalesValueProductsByPeriod: GetTotalSalesValueProductsByPeriodUseCase
   ) {}
 
   @Post()
@@ -42,13 +47,28 @@ export class SalesController {
   }
 
   @Get('/values')
-  findTotalValueSales(@Query('range') range?: string) {
+  findTotalValueSalesByPeriod(@Query('range') range?: string) {
     return this.getTotalValueSalesByPeriod.execute(range);
+  }
+  @Get('/values/products/:id')
+  findTotalSalesValueProductsByPeriod(
+    @Param('id') productId: string,
+    @Query('range') range?: string,
+  ) {
+    return this.getTotalSalesValueProductsByPeriod.execute(productId, range);
   }
 
   @Get('/amount')
-  findTotalSales(@Query('range') range?: string) {
+  findTotalSalesByPeriod(@Query('range') range?: string) {
     return this.getTotalSalesByPeriod.execute(range);
+  }
+
+  @Get('/amount/products/:id')
+  findTotalSalesProductsByPeriod(
+    @Param('id') productId: string,
+    @Query('range') range?: string,
+  ) {
+    return this.getTotalSalesProductsByPeriod.execute(productId, range);
   }
 
   @Get(':id')

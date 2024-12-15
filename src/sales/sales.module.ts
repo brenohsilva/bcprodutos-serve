@@ -10,6 +10,9 @@ import { GetTotalValueSalesByPeriodUseCase } from './usecases/get-total-values-s
 import { FindAllSalesUseCase } from './usecases/find-all-sales.usecase';
 import { FindOneSaleUseCase } from './usecases/find-one-sale.usecase';
 import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
+import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
+import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
+
 
 @Module({
   controllers: [SalesController],
@@ -23,6 +26,8 @@ import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-peri
     UpdateSaleUseCase,
     GetTotalValueSalesByPeriodUseCase,
     GetTotalSalesByPeriodUseCase,
+    GetTotalSalesProductsByPeriodUseCase,
+    GetTotalSalesValueProductsByPeriodUseCase
   ],
 })
 export class SalesModule {}

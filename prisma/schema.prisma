@@ -9,23 +9,27 @@ generator client {
 
 model Product {
   id            Int             @id @default(autoincrement())
-  name          String
-  category      String
-  size          Float?
-  type          String?
-  color         String?
+  name          String          @db.VarChar(45)
+  image         String?         @db.VarChar(45)
   amount        Int
-  image         String?
-  salesPrice    Float
+  type          String?         @db.VarChar(45)
+  size          Float?          @db.Float
+  color         String?         @db.VarChar(45)
+  category      String          @db.VarChar(45)
+  sales_price   Float           @db.Float
+  created_at    DateTime        @default(now()) 
+  updated_at    DateTime        @updatedAt @db.Timestamp()
   shoppingItens ShoppingItens[]
   salesItens    SalesItens[]
 }
 
 model Shopping {
-  id           Int             @id @default(autoincrement())
-  shoppingDate DateTime        @default(now())
-  totalValue   Float
-  itens        ShoppingItens[]
+  id             Int             @id @default(autoincrement())
+  total_value    Float           @db.Float
+  shopping_date  DateTime        @db.Timestamp()
+  payment_method String?         @db.VarChar(45)
+  installment    Int?
+  itens          ShoppingItens[]
 }
 
 model ShoppingItens {
@@ -33,8 +37,8 @@ model ShoppingItens {
   shoppingId Int
   productId  Int
   amount     Int
-  unitPrice  Float
-  subtotal   Float
+  unit_price Float @db.Float
+  sub_total  Float @db.Float
 
   shopping Shopping @relation(fields: [shoppingId], references: [id])
   product  Product  @relation(fields: [productId], references: [id])
@@ -43,20 +47,22 @@ model ShoppingItens {
 }
 
 model Sales {
-  id         Int          @id @default(autoincrement())
-  client     String?
-  totalValue Float
-  salesDate  DateTime     @default(now())
-  itens      SalesItens[]
+  id             Int          @id @default(autoincrement())
+  client         String?      @db.VarChar(45)
+  total_value    Float        @db.Float
+  payment_method String?      @db.VarChar(45)
+  coast          Float        @db.Float
+  sales_date     DateTime     @db.Timestamp()
+  itens          SalesItens[]
 }
 
 model SalesItens {
-  id        Int   @id @default(autoincrement())
-  salesId   Int
-  productId Int
-  amount    Int
-  unitPrice Float
-  subtotal  Float
+  id         Int   @id @default(autoincrement())
+  salesId    Int
+  productId  Int
+  amount     Int
+  unit_price Float @db.Float
+  sub_total  Float @db.Float
 
   sales   Sales   @relation(fields: [salesId], references: [id])
   product Product @relation(fields: [productId], references: [id])

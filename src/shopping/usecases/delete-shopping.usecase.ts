@@ -4,7 +4,10 @@ import { GetOneShoppingUseCase } from './get-one-shopping.usecase';
 
 @Injectable()
 export class DeleteShoppingUseCase {
-  constructor(private readonly shoppingService: ShoppingService, private readonly getAShopping: GetOneShoppingUseCase) {}
+  constructor(
+    private readonly shoppingService: ShoppingService,
+    private readonly getAShopping: GetOneShoppingUseCase,
+  ) {}
 
   async execute(id: string) {
     try {
@@ -12,12 +15,12 @@ export class DeleteShoppingUseCase {
       if (!existingShopping) {
         throw new HttpException('Compra não encontrado.', HttpStatus.NOT_FOUND);
       }
-     
+
       const deleteProduct = await this.shoppingService.remove(Number(id));
 
       return {
         success: true,
-        data: "Shopping deleted successfully",
+        data: 'Shopping deleted successfully',
       };
     } catch (error) {
       throw new HttpException(

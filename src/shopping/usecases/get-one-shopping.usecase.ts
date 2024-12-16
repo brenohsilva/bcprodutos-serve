@@ -1,19 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ShoppingService } from '../shopping.service';
 
-
 @Injectable()
 export class GetOneShoppingUseCase {
-    constructor(private readonly shoppingService: ShoppingService) {}
+  constructor(private readonly shoppingService: ShoppingService) {}
   async execute(id: string) {
     try {
       const product = await this.shoppingService.findOne(Number(id));
 
       if (!product) {
-        throw new HttpException(
-          'Compra não encontrada.',
-          HttpStatus.NOT_FOUND,
-        );
+        throw new HttpException('Compra não encontrada.', HttpStatus.NOT_FOUND);
       }
 
       return {

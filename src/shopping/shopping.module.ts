@@ -7,6 +7,10 @@ import { GetAllShoppingUseCase } from './usecases/get-all-shopping.usecase';
 import { GetOneShoppingUseCase } from './usecases/get-one-shopping.usecase';
 import { UpdateShoppingUseCase } from './usecases/update-shopping.usecase';
 import { DeleteShoppingUseCase } from './usecases/delete-shopping.usecase';
+import { GetTotalShoppingByPeriodUseCase } from './usecases/get-total-shopping-by-period.usecase';
+import { GetTotalShoppingProductsByPeriodUseCase } from './usecases/get-total-shopping-products-by-period.usecase';
+import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-total-shopping-value-products-by-period.usecase';
+import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-values-shopping-by-period.usecase';
 
 @Module({
   controllers: [ShoppingController],
@@ -17,6 +21,10 @@ import { DeleteShoppingUseCase } from './usecases/delete-shopping.usecase';
     GetOneShoppingUseCase,
     UpdateShoppingUseCase,
     DeleteShoppingUseCase,
+    GetTotalShoppingByPeriodUseCase,
+    GetTotalShoppingProductsByPeriodUseCase,
+    GetTotalShoppingValueProductsByPeriodUseCase,
+    GetTotalValueShoppingByPeriodUseCase,
     PrismaService,
   ],
 })

@@ -12,7 +12,9 @@ export class SalesService {
     try {
       const sales = await this.prisma.sales.create({
         data: {
-          totalValue: data.totalValue,
+          total_value: data.total_value,
+          coast: data.coast,
+          payment_method: data.payment_method || 'Pix'
         },
       });
 
@@ -20,17 +22,17 @@ export class SalesService {
         salesId: sales.id,
         productId: Number(item.productId),
         amount: item.amount,
-        unitPrice: item.unitPrice,
-        subtotal: item.amount * item.unitPrice,
+        unit_price: item.unit_price,
+        sub_total: item.amount * item.unit_price,
       }));
 
-      await this.prisma.salesItens.createMany({
+      await this.prisma.salesitens.createMany({
         data: itens,
       });
 
       const salesWithItens = await this.prisma.sales.findUnique({
         where: { id: sales.id },
-        include: { itens: true },
+        include: { salesitens: true },
       });
 
       return salesWithItens;
@@ -45,7 +47,7 @@ export class SalesService {
   async findAll() {
     return this.prisma.sales.findMany({
       include: {
-        itens: true,
+        salesitens: true,
       },
     });
   }
@@ -56,7 +58,7 @@ export class SalesService {
         id,
       },
       include: {
-        itens: true,
+        salesitens: true,
       },
     });
   }
@@ -64,31 +66,31 @@ export class SalesService {
   async getTotalValueSalesByPeriod(beginning: Date, end: Date) {
     const total = await this.prisma.sales.aggregate({
       _sum: {
-        totalValue: true,
+        total_value: true,
       },
       where: {
-        salesDate: {
+        sales_date: {
           gte: beginning,
           lte: end,
         },
       },
     });
-    return total._sum.totalValue || 0;
+    return total._sum.total_value || 0;
   }
 
   async getTotalValueSales() {
     const total = await this.prisma.sales.aggregate({
       _sum: {
-        totalValue: true,
+        total_value: true,
       },
     });
-    return total._sum.totalValue;
+    return total._sum.total_value;
   }
 
   async getTotalSalesByPeriod(beginning: Date, end: Date) {
     return await this.prisma.sales.count({
       where: {
-        salesDate: {
+        sales_date: {
           gte: beginning,
           lte: end,
         },
@@ -101,7 +103,7 @@ export class SalesService {
   }
 
   async findTotalSalesByProduct(productId: number): Promise<number> {
-    const total = await this.prisma.salesItens.aggregate({
+    const total = await this.prisma.salesitens.aggregate({
       _sum: {
         amount: true,
       },
@@ -114,27 +116,27 @@ export class SalesService {
   }
   
   async findTotalSalesValueByProduct(productId: number): Promise<number> {
-    const total = await this.prisma.salesItens.aggregate({
+    const total = await this.prisma.salesitens.aggregate({
       _sum: {
-        subtotal: true,
+        sub_total: true,
       },
       where: {
         productId: productId,
       },
     });
   
-    return total._sum.subtotal || 0;
+    return total._sum.sub_total || 0;
   }
 
   async findTotalSalesProductByPeriod(productId: number, beginning: Date, end: Date){
-    const total = await this.prisma.salesItens.aggregate({
+    const total = await this.prisma.salesitens.aggregate({
       _sum: {
         amount: true,
       },
       where: {
         productId,
         sales: {
-          salesDate: {
+          sales_date: {
             gte: beginning,
             lte: end
           }
@@ -145,57 +147,57 @@ export class SalesService {
   }
 
   async findTotalSalesValueProductByPeriod(productId: number, beginning: Date, end: Date){
-    const total = await this.prisma.salesItens.aggregate({
+    const total = await this.prisma.salesitens.aggregate({
       _sum: {
-        subtotal: true,
+        sub_total: true,
       },
       where: {
         productId,
         sales: {
-          salesDate: {
+          sales_date: {
             gte: beginning,
             lte: end
           }
         }
       }
     })
-    return total._sum.subtotal || 0
+    return total._sum.sub_total || 0
   }
 
   async update(id: number, data: UpdateSalesDto) {
     const salesData = await this.prisma.sales.update({
       where: { id },
       data: {
-        salesDate: data.salesDate,
-        totalValue: data.totalValue,
+        sales_date: data.sales_date,
+        total_value: data.total_value,
       },
     });
     if (data.itens) {
       for (const item of data.itens) {
         if (item.id) {
-          const response = await this.prisma.salesItens.update({
+          const response = await this.prisma.salesitens.update({
             where: { id: item.id },
             data: {
               amount: item.amount,
-              unitPrice: item.unitPrice,
-              subtotal: item.amount * item.unitPrice,
+              unit_price: item.unit_price,
+              sub_total: item.amount * item.unit_price,
             },
           });
         } else {
-          await this.prisma.salesItens.create({
+          await this.prisma.salesitens.create({
             data: {
               salesId: id,
               productId: Number(item.productId),
               amount: item.amount,
-              unitPrice: item.unitPrice,
-              subtotal: item.amount * item.unitPrice,
+              unit_price: item.unit_price,
+              sub_total: item.amount * item.unit_price,
             },
           });
         }
       }
 
       const itemIds = data.itens.map((item) => item.id).filter(Boolean);
-      await this.prisma.salesItens.deleteMany({
+      await this.prisma.salesitens.deleteMany({
         where: {
           salesId: id,
           id: { notIn: itemIds },
@@ -207,7 +209,7 @@ export class SalesService {
   }
 
   async remove(salesId: number) {
-    const deletesalesItens = this.prisma.salesItens.deleteMany({
+    const deletesalesitens = this.prisma.salesitens.deleteMany({
       where: {
         salesId,
       },
@@ -217,7 +219,7 @@ export class SalesService {
         id: salesId,
       },
     });
-    this.prisma.$transaction([deletesalesItens, deletesales]);
+    this.prisma.$transaction([deletesalesitens, deletesales]);
 
     return 'sales deleted successfully';
   }

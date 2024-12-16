@@ -1,24 +1,26 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { PrismaService } from "src/prisma.service";
-import { SalesService } from "../sales.service";
-import { UpdateSalesDto } from "../dto/update-sale.dto";
+import { PrismaService } from 'src/prisma.service';
+import { SalesService } from '../sales.service';
+import { UpdateSalesDto } from '../dto/update-sale.dto';
 
 @Injectable()
 export class UpdateSaleUseCase {
-  constructor(private readonly salesService: SalesService, private prisma: PrismaService) {}
+  constructor(
+    private readonly salesService: SalesService,
+    private prisma: PrismaService,
+  ) {}
 
-  async execute(id: string, data: UpdateSalesDto, ) {
+  async execute(id: string, data: UpdateSalesDto) {
     try {
-      
-        const existingSale = await this.prisma.sales.findUnique({
-            where: {id: Number(id)},
-            include: { itens: true },
-          });
-    
-          if (!existingSale) {
-            throw new HttpException('Venda não encontrada.', HttpStatus.NOT_FOUND);
-          }
+      const existingSale = await this.prisma.sales.findUnique({
+        where: { id: Number(id) },
+        include: { salesitens: true },
+      });
+
+      if (!existingSale) {
+        throw new HttpException('Venda não encontrada.', HttpStatus.NOT_FOUND);
+      }
       const updatedSales = this.salesService.update(Number(id), data);
       return {
         success: true,

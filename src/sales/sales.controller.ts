@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { FindAllSalesUseCase } from './usecases/find-all-sales.usecase';
 import { FindOneSaleUseCase } from './usecases/find-one-sale.usecase';
-
 import { DeleteSaleUseCase } from './usecases/delete-sales.usecase';
 import { CreateSalesDto } from './dto/create-sale.dto';
 import { UpdateSalesDto } from './dto/update-sale.dto';
@@ -20,7 +19,6 @@ import { GetTotalValueSalesByPeriodUseCase } from './usecases/get-total-values-s
 import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
 import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
 import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
-
 
 @Controller('sales')
 export class SalesController {
@@ -33,7 +31,7 @@ export class SalesController {
     private readonly getTotalValueSalesByPeriod: GetTotalValueSalesByPeriodUseCase,
     private readonly getTotalSalesByPeriod: GetTotalSalesByPeriodUseCase,
     private readonly getTotalSalesProductsByPeriod: GetTotalSalesProductsByPeriodUseCase,
-    private readonly getTotalSalesValueProductsByPeriod: GetTotalSalesValueProductsByPeriodUseCase
+    private readonly getTotalSalesValueProductsByPeriod: GetTotalSalesValueProductsByPeriodUseCase,
   ) {}
 
   @Post()

@@ -14,7 +14,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -23,7 +23,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -32,7 +32,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -41,7 +41,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -50,7 +50,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -59,7 +59,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -68,7 +68,7 @@ async function main() {
       color: 'Preto',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -77,7 +77,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -86,7 +86,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -95,7 +95,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -104,7 +104,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -113,7 +113,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -122,7 +122,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -131,7 +131,7 @@ async function main() {
       color: 'Branco',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -140,7 +140,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -149,7 +149,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -158,7 +158,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -167,7 +167,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 2,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -176,7 +176,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
       name: 'Sapato Social',
@@ -185,7 +185,7 @@ async function main() {
       color: 'Marrom',
       type: 'Sem cadarço',
       amount: 1,
-      salesPrice: 65.0,
+      sales_price: 65.0,
     },
     {
         name: 'Sapato Social',
@@ -194,7 +194,7 @@ async function main() {
         color: 'Marrom',
         type: 'Sem cadarço',
         amount: 2,
-        salesPrice: 65.0,
+        sales_price: 65.0,
       },
   ];
 

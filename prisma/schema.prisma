@@ -1,13 +1,13 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-model Product {
+model product {
   id            Int             @id @default(autoincrement())
   name          String          @db.VarChar(45)
   image         String?         @db.VarChar(45)
@@ -17,55 +17,55 @@ model Product {
   color         String?         @db.VarChar(45)
   category      String          @db.VarChar(45)
   sales_price   Float           @db.Float
-  created_at    DateTime        @default(now()) 
-  updated_at    DateTime        @updatedAt @db.Timestamp()
-  shoppingItens ShoppingItens[]
-  salesItens    SalesItens[]
+  created_at    DateTime        @default(now()) @db.Timestamp(0)
+  updated_at    DateTime        @db.Timestamp(0) @updatedAt
+  salesitens    salesitens[]
+  shoppingitens shoppingitens[]
 }
 
-model Shopping {
-  id             Int             @id @default(autoincrement())
-  total_value    Float           @db.Float
-  shopping_date  DateTime        @db.Timestamp()
-  payment_method String?         @db.VarChar(45)
-  installment    Int?
-  itens          ShoppingItens[]
-}
-
-model ShoppingItens {
-  id         Int   @id @default(autoincrement())
-  shoppingId Int
-  productId  Int
-  amount     Int
-  unit_price Float @db.Float
-  sub_total  Float @db.Float
-
-  shopping Shopping @relation(fields: [shoppingId], references: [id])
-  product  Product  @relation(fields: [productId], references: [id])
-
-  @@unique([shoppingId, productId])
-}
-
-model Sales {
+model sales {
   id             Int          @id @default(autoincrement())
   client         String?      @db.VarChar(45)
   total_value    Float        @db.Float
   payment_method String?      @db.VarChar(45)
   coast          Float        @db.Float
-  sales_date     DateTime     @db.Timestamp()
-  itens          SalesItens[]
+  sales_date     DateTime     @default(now()) @db.Timestamp(0)
+  salesitens     salesitens[]
 }
 
-model SalesItens {
-  id         Int   @id @default(autoincrement())
+model salesitens {
+  id         Int     @id @default(autoincrement())
   salesId    Int
   productId  Int
   amount     Int
-  unit_price Float @db.Float
-  sub_total  Float @db.Float
+  unit_price Float   @db.Float
+  sub_total  Float   @db.Float
+  product    product @relation(fields: [productId], references: [id], map: "SalesItens_productId_fkey")
+  sales      sales   @relation(fields: [salesId], references: [id], map: "SalesItens_salesId_fkey")
 
-  sales   Sales   @relation(fields: [salesId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  @@unique([salesId, productId], map: "SalesItens_salesId_productId_key")
+  @@index([productId], map: "SalesItens_productId_fkey")
+}
 
-  @@unique([salesId, productId])
+model shopping {
+  id             Int             @id @default(autoincrement())
+  total_value    Float           @db.Float
+  shopping_date  DateTime        @default(now()) @db.Timestamp(0)
+  payment_method String?         @db.VarChar(45)
+  installment    Int?
+  shoppingitens  shoppingitens[]
+}
+
+model shoppingitens {
+  id         Int      @id @default(autoincrement())
+  shoppingId Int
+  productId  Int
+  amount     Int
+  unit_price Float    @db.Float
+  sub_total  Float    @db.Float
+  product    product  @relation(fields: [productId], references: [id], map: "ShoppingItens_productId_fkey")
+  shopping   shopping @relation(fields: [shoppingId], references: [id], map: "ShoppingItens_shoppingId_fkey")
+
+  @@unique([shoppingId, productId], map: "ShoppingItens_shoppingId_productId_key")
+  @@index([productId], map: "ShoppingItens_productId_fkey")
 }

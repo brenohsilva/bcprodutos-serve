@@ -1,13 +1,15 @@
-import { CreateProductDto } from "src/products/dto/create-product.dto";
+import { CreateProductDto } from 'src/products/dto/create-product.dto';
 
 export class SalesItens {
-    productId: number | string;
-    amount: number;
-    unitPrice: number;
+  productId: number | string;
+  amount: number;
+  unit_price: number;
 }
 
 export class CreateSalesDto {
-    totalValue: number;
-    itens: SalesItens[]
-    newItens?: CreateProductDto[]
+  total_value: number;
+  payment_method: string;
+  coast: number;
+  itens: SalesItens[];
+  newItens?: CreateProductDto[];
 }

@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
 import { PrismaService } from 'src/prisma.service';
-import { ShoppingItens } from '@prisma/client';
 
 @Injectable()
 export class ShoppingService {
@@ -62,61 +61,60 @@ export class ShoppingService {
   }
 
   async update(id: number, data: UpdateShoppingDto) {
-    
-      const shoppingData = await this.prisma.shopping.update({
-        where: { id },
-        data: {
-          shoppingDate: data.shoppingDate,
-          totalValue: data.totalValue,
-        },
-      });
- 
-      for (const item of data.itens) {
-        if (item.id) {
-          const response = await this.prisma.shoppingItens.update({
-            where: { id: item.id },
-            data: {
-              amount: item.amount,
-              unitPrice: item.unitPrice,
-              subtotal: item.amount * item.unitPrice,
-            },
-          });
-        } else {
-          await this.prisma.shoppingItens.create({
-            data: {
-              shoppingId: id,
-              productId: Number(item.productId),
-              amount: item.amount,
-              unitPrice: item.unitPrice,
-              subtotal: item.amount * item.unitPrice,
-            },
-          });
-        }
+    const shoppingData = await this.prisma.shopping.update({
+      where: { id },
+      data: {
+        shoppingDate: data.shoppingDate,
+        totalValue: data.totalValue,
+      },
+    });
+
+    for (const item of data.itens) {
+      if (item.id) {
+        const response = await this.prisma.shoppingItens.update({
+          where: { id: item.id },
+          data: {
+            amount: item.amount,
+            unitPrice: item.unitPrice,
+            subtotal: item.amount * item.unitPrice,
+          },
+        });
+      } else {
+        await this.prisma.shoppingItens.create({
+          data: {
+            shoppingId: id,
+            productId: Number(item.productId),
+            amount: item.amount,
+            unitPrice: item.unitPrice,
+            subtotal: item.amount * item.unitPrice,
+          },
+        });
       }
-      const itemIds = data.itens.map((item) => item.id).filter(Boolean);
-      await this.prisma.shoppingItens.deleteMany({
-        where: {
-          shoppingId: id,
-          id: { notIn: itemIds },
-        },
-      });
-      
+    }
+    const itemIds = data.itens.map((item) => item.id).filter(Boolean);
+    await this.prisma.shoppingItens.deleteMany({
+      where: {
+        shoppingId: id,
+        id: { notIn: itemIds },
+      },
+    });
+
     return `shopping updated successfully`;
   }
 
   async remove(shoppingId: number) {
     const deleteShoppingItens = this.prisma.shoppingItens.deleteMany({
       where: {
-        shoppingId
-      }
-    })
+        shoppingId,
+      },
+    });
     const deleteShopping = this.prisma.shopping.delete({
       where: {
-        id: shoppingId
-      }
-    })
-    this.prisma.$transaction([deleteShoppingItens, deleteShopping])
-    
+        id: shoppingId,
+      },
+    });
+    this.prisma.$transaction([deleteShoppingItens, deleteShopping]);
+
     return 'shopping deleted successfully';
   }
 }

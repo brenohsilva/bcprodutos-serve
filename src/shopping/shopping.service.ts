@@ -10,6 +10,8 @@ export class ShoppingService {
       const shopping = await this.prisma.shopping.create({
         data: {
           total_value: data.total_value,
+          payment_method: data.payment_method,
+          installment: data.installment,
         },
       });
 
@@ -33,7 +35,7 @@ export class ShoppingService {
       return shoppingWithItens;
     } catch (error) {
       throw new HttpException(
-        'Erro ao criar a compra. Verifique os dados e tente novamente.',
+        'Erro ao criar a compra.',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

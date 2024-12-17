@@ -26,7 +26,7 @@ export class CreateSaleUseCase {
               );
         }
 
-        const shopping = this.salesService.create(data)
+        const sales = await this.salesService.create(data)
 
         return {
             success: true,

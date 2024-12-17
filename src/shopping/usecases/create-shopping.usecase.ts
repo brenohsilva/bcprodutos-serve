@@ -27,8 +27,8 @@ export class CreateShoppingUseCase {
         );
       }
 
-      const shopping = this.shoppingService.create(data);
-
+      const shopping = await this.shoppingService.create(data);
+      
       return {
         success: true,
         data: 'Compra registrada com sucesso',
@@ -39,8 +39,10 @@ export class CreateShoppingUseCase {
       }
 
       // Erro genérico
+      console.log("Olha o eeror", error)
       throw new HttpException(
         'Erro ao processar a compra. Tente novamente mais tarde.',
+        
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

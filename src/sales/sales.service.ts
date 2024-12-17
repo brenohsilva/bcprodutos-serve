@@ -37,6 +37,7 @@ export class SalesService {
 
       return salesWithItens;
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Erro ao criar a venda. Verifique os dados e tente novamente.',
         HttpStatus.INTERNAL_SERVER_ERROR,

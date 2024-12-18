@@ -21,7 +21,7 @@ export class UpdateSaleUseCase {
       if (!existingSale) {
         throw new HttpException('Venda não encontrada.', HttpStatus.NOT_FOUND);
       }
-      const updatedSales = this.salesService.update(Number(id), data);
+      const updatedSales = await this.salesService.update(Number(id), data);
       return {
         success: true,
         data: updatedSales,

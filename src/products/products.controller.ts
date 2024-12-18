@@ -16,6 +16,7 @@ import { AddProductsUseCase } from './usecases/add-products.usecase';
 import { GetOneProductUseCase } from './usecases/get-one-product.usecase';
 import { UpdateProductsUseCase } from './usecases/update-products.usecase';
 import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
+import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.usecase';
 
 @Controller('products')
 export class ProductsController {
@@ -25,12 +26,18 @@ export class ProductsController {
     private readonly addProducts: AddProductsUseCase,
     private readonly getOneProduct: GetOneProductUseCase,
     private readonly updateProduct: UpdateProductsUseCase,
-    private readonly deleteProduct: DeleteProductsUseCase
+    private readonly deleteProduct: DeleteProductsUseCase,
+    private readonly findLastSalesProducts: GetLastSalesProductsUseCase,
   ) {}
 
   @Post()
   create(@Body() data: CreateProductDto) {
     return this.addProducts.execute(data);
+  }
+
+  @Get('/last-sales')
+  findLastProducts() {
+    return this.findLastSalesProducts.execute();
   }
 
   @Get()
@@ -42,6 +49,8 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.getOneProduct.execute(id);
   }
+
+  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() data: UpdateProductDto) {

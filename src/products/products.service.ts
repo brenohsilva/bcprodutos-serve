@@ -34,4 +34,23 @@ export class ProductsService {
       where:{id}
     });
   }
+
+  async findLastSalesProducts(){
+    return await this.prisma.salesitens.findMany({
+      orderBy: {
+        sales: {
+          sales_date: 'desc'
+        }
+      },
+      take: 5,
+      include:{
+        product: true,
+        sales: {
+          select: {
+            sales_date: true
+          }
+        }
+      }
+    })
+  }
 }

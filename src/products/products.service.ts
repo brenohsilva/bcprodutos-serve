@@ -12,9 +12,25 @@ export class ProductsService {
     return await this.prisma.product.create({ data });
   }
 
-  async findAll() {
-    return await this.prisma.product.findMany();
+  async findAll(filter: any) {
+    let { category, type, size, name, sortBy, sortOrder } = filter;
+    size = Number(size)
+  console.log(size)
+    return await this.prisma.product.findMany({
+      where: {
+        ...(category && { category }),
+        ...(type && {type} ),
+        ...(size && {size}),
+        ...(name && { name: { startsWith: name } }),
+      },
+      orderBy: sortBy
+        ? {
+            [sortBy]: sortOrder === 'desc' ? 'desc' : 'asc',
+          }
+        : undefined,
+    });
   }
+  
 
   async findOne(id: number) {
     return await this.prisma.product.findUnique({
@@ -53,4 +69,25 @@ export class ProductsService {
       }
     })
   }
+
+  async findLastShoppingProducts(){
+    return await this.prisma.shoppingitens.findMany({
+      orderBy: {
+        shopping: {
+          shopping_date: 'desc'
+        }
+      },
+      take: 5,
+      include:{
+        product: true,
+        shopping: {
+          select: {
+            shopping_date: true
+          }
+        }
+      }
+    })
+  }
+
+  
 }

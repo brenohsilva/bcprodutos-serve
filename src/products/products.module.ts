@@ -9,6 +9,7 @@ import { GetOneProductUseCase } from './usecases/get-one-product.usecase';
 import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
 import { UpdateProductsUseCase } from './usecases/update-products.usecase';
 import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.usecase';
+import { GetLastShoppingProductsUseCase } from './usecases/get-last-shopping-products.usecase';
 
 @Module({
   controllers: [ProductsController],
@@ -20,7 +21,8 @@ import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.
     AddProductsUseCase,
     UpdateProductsUseCase,
     DeleteProductsUseCase,
-    GetLastSalesProductsUseCase
+    GetLastSalesProductsUseCase,
+    GetLastShoppingProductsUseCase
   ],
 })
 export class ProductsModule {}

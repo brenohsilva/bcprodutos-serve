@@ -7,6 +7,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -36,13 +37,18 @@ export class ProductsController {
   }
 
   @Get('/last-sales')
-  findLastProducts() {
+  findLastProductsSold() {
+    return this.findLastSalesProducts.execute();
+  }
+  
+  @Get('/last-shopping')
+  findLastProductsPurchased() {
     return this.findLastSalesProducts.execute();
   }
 
   @Get()
-  findAll() {
-    return this.getAllProducts.execute();
+  findAll(@Query() query: any) {
+    return this.getAllProducts.execute(query);
   }
 
   @Get(':id')

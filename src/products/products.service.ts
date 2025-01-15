@@ -14,8 +14,7 @@ export class ProductsService {
 
   async findAll(filter: any) {
     let { category, type, size, name, sortBy, sortOrder } = filter;
-    size = Number(size)
-  console.log(size)
+    size = Number(sortOrder)
     return await this.prisma.product.findMany({
       where: {
         ...(category && { category }),

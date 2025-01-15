@@ -16,7 +16,6 @@ export class AddProductsUseCase {
       };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        
         if (error.code === 'P2002') {
           throw new HttpException(
             'Já existe um produto com esses dados.',

@@ -7,7 +7,7 @@ export class GetAllProductsUseCase {
   constructor(private readonly productsService: ProductsService) {}
 
   async execute(query: any) {
-    console.log(query)
+    
     try {
       const products = await this.productsService.findAll(query);
 

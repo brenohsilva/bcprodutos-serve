@@ -18,6 +18,7 @@ import { GetOneProductUseCase } from './usecases/get-one-product.usecase';
 import { UpdateProductsUseCase } from './usecases/update-products.usecase';
 import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
 import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.usecase';
+import { GetStocksProductsQuantityUseCase } from './usecases/get-stocks-products-quantity.usecase';
 
 @Controller('products')
 export class ProductsController {
@@ -29,6 +30,7 @@ export class ProductsController {
     private readonly updateProduct: UpdateProductsUseCase,
     private readonly deleteProduct: DeleteProductsUseCase,
     private readonly findLastSalesProducts: GetLastSalesProductsUseCase,
+    private readonly findStockProductsQuantity: GetStocksProductsQuantityUseCase,
   ) {}
 
   @Post()
@@ -47,8 +49,13 @@ export class ProductsController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
+  findAllByFilter(@Query() query: any) {
     return this.getAllProducts.execute(query);
+  }
+
+  @Get('/stocks/quantity')
+  findStockProductQunatity(){
+    return this.findStockProductsQuantity.execute()
   }
 
   @Get(':id')

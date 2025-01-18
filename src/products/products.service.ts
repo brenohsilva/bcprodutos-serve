@@ -12,7 +12,11 @@ export class ProductsService {
     return await this.prisma.product.create({ data });
   }
 
-  async findAll(filter: any) {
+  async findAll(){
+    return await this.prisma.product.findMany()
+  }
+
+  async findAllByFilter(filter: any) {
     let { category, type, size, name, sortBy, sortOrder } = filter;
     size = Number(sortOrder)
     return await this.prisma.product.findMany({

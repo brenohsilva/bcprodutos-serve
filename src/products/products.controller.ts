@@ -19,6 +19,7 @@ import { UpdateProductsUseCase } from './usecases/update-products.usecase';
 import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
 import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.usecase';
 import { GetStocksProductsQuantityUseCase } from './usecases/get-stocks-products-quantity.usecase';
+import { GetQuantityOfProductsByNameUseCase } from './usecases/get-quantity-of-products-by-name.usecase';
 
 @Controller('products')
 export class ProductsController {
@@ -31,6 +32,7 @@ export class ProductsController {
     private readonly deleteProduct: DeleteProductsUseCase,
     private readonly findLastSalesProducts: GetLastSalesProductsUseCase,
     private readonly findStockProductsQuantity: GetStocksProductsQuantityUseCase,
+    private readonly findStockProductsQuantityByName: GetQuantityOfProductsByNameUseCase
   ) {}
 
   @Post()
@@ -53,17 +55,22 @@ export class ProductsController {
     return this.getAllProducts.execute(query);
   }
 
+  @Get('/stocks/quantity-by-name')
+  findStockProductQuantityByName(){
+    return this.findStockProductsQuantityByName.execute()
+  }
+
   @Get('/stocks/quantity')
-  findStockProductQunatity(){
+  findStockProductQuantity(){
     return this.findStockProductsQuantity.execute()
   }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.getOneProduct.execute(id);
   }
 
-  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() data: UpdateProductDto) {

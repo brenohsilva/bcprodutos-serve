@@ -7,6 +7,8 @@ import { GetTotalValueSalesByPeriodUseCase } from 'src/sales/usecases/get-total-
 import { GetTotalValueShoppingByPeriodUseCase } from 'src/shopping/usecases/get-total-values-shopping-by-period.usecase';
 import { SalesService } from 'src/sales/sales.service';
 import { ShoppingService } from 'src/shopping/shopping.service';
+import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount-in-products.usecase';
+import { ProductsService } from 'src/products/products.service';
 
 @Module({
   controllers: [OverViewController],
@@ -16,6 +18,8 @@ import { ShoppingService } from 'src/shopping/shopping.service';
     GetProfitUseCase,
     GetTotalValueSalesByPeriodUseCase,
     GetTotalValueShoppingByPeriodUseCase,
+    GetRevenueAmountInProductsUseCase,
+    ProductsService,
     SalesService,
     ShoppingService,
   ],

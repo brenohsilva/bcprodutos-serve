@@ -5,11 +5,12 @@ import { PrismaService } from 'src/prisma.service';
 export class OverViewService {
   constructor(private prisma: PrismaService) {}
 
-  async findShoppingValueByMonth(month: any) {
-    return await this.prisma.shopping.findMany({
-      where: {
-        shopping_date: {},
-      },
-    });
-  }
+  // async findShoppingValueByMonth(month: any) {
+  //   return await this.prisma.shopping.findMany({
+  //     where: {
+  //       shopping_date: {},
+  //     },
+  //   });
+  // }
+
 }

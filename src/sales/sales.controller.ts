@@ -19,6 +19,7 @@ import { GetTotalValueSalesByPeriodUseCase } from './usecases/get-total-values-s
 import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
 import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
 import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
+import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-sales-of-products.usecase';
 
 @Controller('sales')
 export class SalesController {
@@ -32,6 +33,7 @@ export class SalesController {
     private readonly getTotalSalesByPeriod: GetTotalSalesByPeriodUseCase,
     private readonly getTotalSalesProductsByPeriod: GetTotalSalesProductsByPeriodUseCase,
     private readonly getTotalSalesValueProductsByPeriod: GetTotalSalesValueProductsByPeriodUseCase,
+    private readonly getQuantityOfSalesUseCase: GetQuantityOfSalesOfProductsUseCase,
   ) {}
 
   @Post()
@@ -67,6 +69,11 @@ export class SalesController {
     @Query('range') range?: string,
   ) {
     return this.getTotalSalesProductsByPeriod.execute(productId, range);
+  }
+
+  @Get('quantity-by-products')
+  findQuantityOfSalesOfProducts() {
+    return this.getQuantityOfSalesUseCase.execute();
   }
 
   @Get(':id')

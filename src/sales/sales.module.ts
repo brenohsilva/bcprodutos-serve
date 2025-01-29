@@ -12,13 +12,15 @@ import { FindOneSaleUseCase } from './usecases/find-one-sale.usecase';
 import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-period.usecase';
 import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
 import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
-
+import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-sales-of-products.usecase';
+import { ProductsService } from 'src/products/products.service';
 
 @Module({
   controllers: [SalesController],
   providers: [
     SalesService,
     PrismaService,
+    ProductsService,
     FindAllSalesUseCase,
     FindOneSaleUseCase,
     DeleteSaleUseCase,
@@ -27,7 +29,8 @@ import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-
     GetTotalValueSalesByPeriodUseCase,
     GetTotalSalesByPeriodUseCase,
     GetTotalSalesProductsByPeriodUseCase,
-    GetTotalSalesValueProductsByPeriodUseCase
+    GetTotalSalesValueProductsByPeriodUseCase,
+    GetQuantityOfSalesOfProductsUseCase,
   ],
 })
 export class SalesModule {}

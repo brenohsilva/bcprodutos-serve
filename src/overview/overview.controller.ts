@@ -4,7 +4,10 @@ import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount
 
 @Controller('overview')
 export class OverViewController {
-  constructor(private readonly getProfitUseCase: GetProfitUseCase, private readonly getRevenueAmountUseCase: GetRevenueAmountInProductsUseCase) {}
+  constructor(
+    private readonly getProfitUseCase: GetProfitUseCase,
+    private readonly getRevenueAmountUseCase: GetRevenueAmountInProductsUseCase,
+  ) {}
 
   @Get('/profit')
   findProfit() {
@@ -12,7 +15,7 @@ export class OverViewController {
   }
 
   @Get('/revenue')
-  findRevenueAmount(){
-    return this.getRevenueAmountUseCase.execute()
+  findRevenueAmount() {
+    return this.getRevenueAmountUseCase.execute();
   }
 }

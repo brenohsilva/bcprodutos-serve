@@ -26,6 +26,7 @@ model product {
 model sales {
   id             Int          @id @default(autoincrement())
   client         String?      @db.VarChar(45)
+  description String?
   total_value    Float        @db.Float
   payment_method String?      @db.VarChar(45)
   coast          Float        @db.Float
@@ -49,6 +50,7 @@ model salesitens {
 
 model shopping {
   id             Int             @id @default(autoincrement())
+  description String?
   total_value    Float           @db.Float
   shopping_date  DateTime        @default(now()) @db.Timestamp(0)
   payment_method String?         @db.VarChar(45)

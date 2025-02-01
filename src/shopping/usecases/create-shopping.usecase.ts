@@ -1,8 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { ShoppingService } from '../shopping.service';
 import { PrismaService } from 'src/prisma.service';
 import { CreateShoppingDto } from '../dto/create-shopping.dto';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class CreateShoppingUseCase {
@@ -28,22 +34,26 @@ export class CreateShoppingUseCase {
       }
 
       const shopping = await this.shoppingService.create(data);
-      
-      return {
-        success: true,
-        data: 'Compra registrada com sucesso',
-      };
+
+      if (shopping) {
+        return {
+          success: true,
+          data: 'Compra registrada com sucesso',
+        };
+      }
     } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
+      if (error instanceof PrismaClientValidationError) {
+        throw new HttpException(
+          'Erro ao processar a compra, Verifique todos os campos e tente novamente',
+          HttpStatus.BAD_REQUEST
+        );
       }
 
-      // Erro genérico
-      console.log("Olha o eeror", error)
+      console.log(error);
       throw new HttpException(
         'Erro ao processar a compra. Tente novamente mais tarde.',
-        
-        HttpStatus.INTERNAL_SERVER_ERROR,
+
+        HttpStatus.BAD_REQUEST,
       );
     }
   }

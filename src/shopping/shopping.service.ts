@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
 import { UpdateShoppingDto } from './dto/update-shopping.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -12,6 +12,7 @@ export class ShoppingService {
           total_value: data.total_value,
           payment_method: data.payment_method,
           installment: data.installment,
+          tax: data.tax,
         },
       });
 
@@ -27,6 +28,19 @@ export class ShoppingService {
         data: itens,
       });
 
+      await Promise.all(
+        data.itens.map(async (item) => {
+          await this.prisma.product.update({
+            where: { id: Number(item.productId) },
+            data: {
+              amount: {
+                increment: item.amount,
+              },
+            },
+          });
+        }),
+      );
+
       const shoppingWithItens = await this.prisma.shopping.findUnique({
         where: { id: shopping.id },
         include: { shoppingitens: true },
@@ -34,12 +48,10 @@ export class ShoppingService {
 
       return shoppingWithItens;
     } catch (error) {
-      throw new HttpException(
-        'Erro ao criar a compra.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw error;
     }
   }
+
   async findAll() {
     return this.prisma.shopping.findMany({
       include: {

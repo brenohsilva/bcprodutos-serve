@@ -7,9 +7,11 @@ export class ShoppingItens {
 }
 
 export class CreateShoppingDto {
+  description?: string;
   total_value: number;
   payment_method: string;
   installment: number;
+  tax: number;
   itens: ShoppingItens[];
   newItens?: CreateProductDto[];
 }

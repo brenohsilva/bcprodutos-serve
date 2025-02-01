@@ -55,6 +55,7 @@ model shopping {
   shopping_date  DateTime        @default(now()) @db.Timestamp(0)
   payment_method String?         @db.VarChar(45)
   installment    Int?
+  tax Int?
   shoppingitens  shoppingitens[]
 }
 

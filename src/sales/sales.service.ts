@@ -12,13 +12,13 @@ export class SalesService {
     try {
       const sales = await this.prisma.sales.create({
         data: {
-          description: data.description || "Venda Realizada",
+          description: data.description || 'Venda Realizada',
           total_gross_value: data.total_gross_value,
           total_net_value: data.total_net_value,
           additional: data.additional || 0,
           discount: data.discount || 0,
           coast: data.coast,
-          payment_method: data.payment_method || 'Pix'
+          payment_method: data.payment_method || 'Pix',
         },
       });
 
@@ -40,7 +40,7 @@ export class SalesService {
             where: { id: Number(item.productId) },
             data: {
               amount: {
-                decrement: item.amount
+                decrement: item.amount,
               },
             },
           });
@@ -66,6 +66,20 @@ export class SalesService {
     });
   }
 
+  async findSalesByPeriod(beginning: Date, end: Date) {
+    return this.prisma.sales.findMany({
+      include: {
+        salesitens: true,
+      },
+      where: {
+        sales_date: {
+          gte: beginning,
+          lte: end,
+        },
+      },
+    });
+  }
+
   async findOne(id: number) {
     return await this.prisma.sales.findUnique({
       where: {
@@ -77,10 +91,11 @@ export class SalesService {
     });
   }
 
-  async getTotalValueSalesByPeriod(beginning: Date, end: Date) {
+  async getTotalValueSalesByPeriod(beginning: Date, end: Date): Promise<any> {
     const total = await this.prisma.sales.aggregate({
       _sum: {
         total_net_value: true,
+        total_gross_value: true,
       },
       where: {
         sales_date: {
@@ -89,7 +104,10 @@ export class SalesService {
         },
       },
     });
-    return total._sum.total_net_value || 0;
+    return {
+      bruto: total._sum.total_gross_value.toFixed(2) || 0,
+      liquido: total._sum.total_net_value.toFixed(2) || 0,
+    };
   }
 
   async getTotalValueSales() {
@@ -125,10 +143,10 @@ export class SalesService {
         productId: productId,
       },
     });
-  
+
     return total._sum.amount || 0;
   }
-  
+
   async findTotalSalesValueByProduct(productId: number): Promise<number> {
     const total = await this.prisma.salesitens.aggregate({
       _sum: {
@@ -138,11 +156,15 @@ export class SalesService {
         productId: productId,
       },
     });
-  
+
     return total._sum.sub_total || 0;
   }
 
-  async findTotalSalesProductByPeriod(productId: number, beginning: Date, end: Date){
+  async findTotalSalesProductByPeriod(
+    productId: number,
+    beginning: Date,
+    end: Date,
+  ) {
     const total = await this.prisma.salesitens.aggregate({
       _sum: {
         amount: true,
@@ -152,15 +174,19 @@ export class SalesService {
         sales: {
           sales_date: {
             gte: beginning,
-            lte: end
-          }
-        }
-      }
-    })
-    return total._sum.amount || 0
+            lte: end,
+          },
+        },
+      },
+    });
+    return total._sum.amount || 0;
   }
 
-  async findTotalSalesValueProductByPeriod(productId: number, beginning: Date, end: Date){
+  async findTotalSalesValueProductByPeriod(
+    productId: number,
+    beginning: Date,
+    end: Date,
+  ) {
     const total = await this.prisma.salesitens.aggregate({
       _sum: {
         sub_total: true,
@@ -170,12 +196,12 @@ export class SalesService {
         sales: {
           sales_date: {
             gte: beginning,
-            lte: end
-          }
-        }
-      }
-    })
-    return total._sum.sub_total || 0
+            lte: end,
+          },
+        },
+      },
+    });
+    return total._sum.sub_total || 0;
   }
 
   async update(id: number, data: UpdateSalesDto) {

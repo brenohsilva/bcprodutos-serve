@@ -14,6 +14,7 @@ import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales
 import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
 import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-sales-of-products.usecase';
 import { ProductsService } from 'src/products/products.service';
+import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period';
 
 @Module({
   controllers: [SalesController],
@@ -31,6 +32,7 @@ import { ProductsService } from 'src/products/products.service';
     GetTotalSalesProductsByPeriodUseCase,
     GetTotalSalesValueProductsByPeriodUseCase,
     GetQuantityOfSalesOfProductsUseCase,
+    GetQuantityOfProductsSoldByPeriodUseCase,
   ],
 })
 export class SalesModule {}

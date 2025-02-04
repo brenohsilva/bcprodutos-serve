@@ -4,6 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { SalesService } from '../sales.service';
 import { CreateSalesDto } from '../dto/create-sale.dto';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 
 @Injectable()
@@ -28,23 +29,27 @@ export class CreateSaleUseCase {
 
         const sales = await this.salesService.create(data)
 
-        return {
-            success: true,
-            data: 'Venda registrada com sucesso',
-          };
+        if (sales) {
+          return {
+              success: true,
+              data: 'Venda registrada com sucesso',
+            };
+        }
 
     } catch (error) {
-
-        if (error instanceof HttpException) {
-            throw error;
+          if (error instanceof PrismaClientValidationError) {
+            throw new HttpException(
+              'Erro ao processar a venda, Verifique todos os campos e tente novamente',
+              HttpStatus.BAD_REQUEST
+            );
           }
     
-          // Erro genérico
+          console.log(error);
           throw new HttpException(
             'Erro ao processar a venda. Tente novamente mais tarde.',
-            HttpStatus.INTERNAL_SERVER_ERROR,
+    
+            HttpStatus.BAD_REQUEST,
           );
-        
-    }
+        }
   }
 }

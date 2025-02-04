@@ -18,20 +18,22 @@ model product {
   category      String          @db.VarChar(45)
   sales_price   Float           @db.Float
   created_at    DateTime        @default(now()) @db.Timestamp(0)
-  updated_at    DateTime        @db.Timestamp(0) @updatedAt
+  updated_at    DateTime        @updatedAt @db.Timestamp(0)
   salesitens    salesitens[]
   shoppingitens shoppingitens[]
 }
 
 model sales {
-  id             Int          @id @default(autoincrement())
-  client         String?      @db.VarChar(45)
-  description String?
-  total_value    Float        @db.Float
-  payment_method String?      @db.VarChar(45)
-  coast          Float        @db.Float
-  sales_date     DateTime     @default(now()) @db.Timestamp(0)
-  salesitens     salesitens[]
+  id                Int          @id @default(autoincrement())
+  description       String?      @db.VarChar(45)
+  total_gross_value Float        @db.Float
+  total_net_value   Float        @db.Float
+  additional        Float?       @db.Float
+  discount          Float?       @db.Float
+  coast             Float        @db.Float
+  payment_method    String?      @db.VarChar(45)
+  sales_date        DateTime     @default(now()) @db.Timestamp(0)
+  salesitens        salesitens[]
 }
 
 model salesitens {
@@ -50,12 +52,12 @@ model salesitens {
 
 model shopping {
   id             Int             @id @default(autoincrement())
-  description String?
+  description    String?         @db.VarChar(45)
   total_value    Float           @db.Float
   shopping_date  DateTime        @default(now()) @db.Timestamp(0)
   payment_method String?         @db.VarChar(45)
   installment    Int?
-  tax Int?
+  tax            Int?
   shoppingitens  shoppingitens[]
 }
 

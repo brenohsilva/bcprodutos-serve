@@ -12,7 +12,11 @@ export class SalesService {
     try {
       const sales = await this.prisma.sales.create({
         data: {
-          total_value: data.total_value,
+          description: data.description || "Venda Realizada",
+          total_gross_value: data.total_gross_value,
+          total_net_value: data.total_net_value,
+          additional: data.additional || 0,
+          discount: data.discount || 0,
           coast: data.coast,
           payment_method: data.payment_method || 'Pix'
         },
@@ -30,6 +34,19 @@ export class SalesService {
         data: itens,
       });
 
+      await Promise.all(
+        data.itens.map(async (item) => {
+          await this.prisma.product.update({
+            where: { id: Number(item.productId) },
+            data: {
+              amount: {
+                decrement: item.amount
+              },
+            },
+          });
+        }),
+      );
+
       const salesWithItens = await this.prisma.sales.findUnique({
         where: { id: sales.id },
         include: { salesitens: true },
@@ -37,11 +54,7 @@ export class SalesService {
 
       return salesWithItens;
     } catch (error) {
-      console.log(error)
-      throw new HttpException(
-        'Erro ao criar a venda. Verifique os dados e tente novamente.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw error;
     }
   }
 
@@ -67,7 +80,7 @@ export class SalesService {
   async getTotalValueSalesByPeriod(beginning: Date, end: Date) {
     const total = await this.prisma.sales.aggregate({
       _sum: {
-        total_value: true,
+        total_net_value: true,
       },
       where: {
         sales_date: {
@@ -76,16 +89,16 @@ export class SalesService {
         },
       },
     });
-    return total._sum.total_value || 0;
+    return total._sum.total_net_value || 0;
   }
 
   async getTotalValueSales() {
     const total = await this.prisma.sales.aggregate({
       _sum: {
-        total_value: true,
+        total_net_value: true,
       },
     });
-    return total._sum.total_value;
+    return total._sum.total_net_value;
   }
 
   async getTotalSalesByPeriod(beginning: Date, end: Date) {
@@ -170,7 +183,7 @@ export class SalesService {
       where: { id },
       data: {
         sales_date: data.sales_date,
-        total_value: data.total_value,
+        total_net_value: data.total_net_value,
       },
     });
     if (data.itens) {

@@ -5,11 +5,12 @@ export class CreateProductDto {
   name: string;
   image: string;
   @IsNotEmpty()
-  category: string;
-  size: number;
-  @IsNotEmpty()
   amount: number;
+  type: string;
+  size: number;
   color: string;
+  @IsNotEmpty()
+  category: string;
   @IsNotEmpty()
   sales_price: number;
 }

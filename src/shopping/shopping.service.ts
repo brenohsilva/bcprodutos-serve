@@ -9,6 +9,7 @@ export class ShoppingService {
     try {
       const shopping = await this.prisma.shopping.create({
         data: {
+          description: data.description,
           total_value: data.total_value,
           payment_method: data.payment_method,
           installment: data.installment,

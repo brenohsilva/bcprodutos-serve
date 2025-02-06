@@ -13,7 +13,7 @@ import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-tot
 import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-values-shopping-by-period.usecase';
 import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
 import { ProductsService } from 'src/products/products.service';
-import { GetLastShoppingUseCase } from './usecases/get-last-shopping.usecase';
+import { GetLastShoppingUseCase } from './usecases/get-latest-shopping.usecase';
 
 @Module({
   controllers: [ShoppingController],

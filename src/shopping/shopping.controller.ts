@@ -21,6 +21,7 @@ import { GetTotalShoppingByPeriodUseCase } from './usecases/get-total-shopping-b
 import { GetTotalShoppingProductsByPeriodUseCase } from './usecases/get-total-shopping-products-by-period.usecase';
 import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-total-shopping-value-products-by-period.usecase';
 import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
+import { GetLastShoppingUseCase } from './usecases/get-latest-shopping.usecase';
 
 @Controller('shopping')
 export class ShoppingController {
@@ -36,6 +37,7 @@ export class ShoppingController {
     private readonly getTotalShoppingProductsByPeriod: GetTotalShoppingProductsByPeriodUseCase,
     private readonly getTotalShoppingValueProductsByPeriod: GetTotalShoppingValueProductsByPeriodUseCase,
     private readonly getQuantityOfProductsPurchasedByPeriod: GetQuantityOfProductsPurchasedByPeriodUseCase,
+    private readonly getLastShopping: GetLastShoppingUseCase
   ) {}
 
   @Post()
@@ -64,6 +66,11 @@ export class ShoppingController {
     @Query('range') range?: string,
   ) {
     return this.getTotalShoppingProductsByPeriod.execute(productId, range);
+  }
+
+  @Get('/latest')
+  findLastProducts(){
+    return this.getLastShopping.execute()
   }
 
   @Get()

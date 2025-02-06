@@ -20,6 +20,7 @@ import { DeleteProductsUseCase } from './usecases/delete-products.usecase';
 import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.usecase';
 import { GetStocksProductsQuantityUseCase } from './usecases/get-stocks-products-quantity.usecase';
 import { GetQuantityOfProductsByNameUseCase } from './usecases/get-quantity-of-products-by-name.usecase';
+import { GetLastShoppingProductsUseCase } from './usecases/get-last-shopping-products.usecase';
 
 @Controller('products')
 export class ProductsController {
@@ -31,6 +32,7 @@ export class ProductsController {
     private readonly updateProduct: UpdateProductsUseCase,
     private readonly deleteProduct: DeleteProductsUseCase,
     private readonly findLastSalesProducts: GetLastSalesProductsUseCase,
+    private readonly findLastShoppingProducts: GetLastShoppingProductsUseCase,
     private readonly findStockProductsQuantity: GetStocksProductsQuantityUseCase,
     private readonly findStockProductsQuantityByName: GetQuantityOfProductsByNameUseCase
   ) {}
@@ -40,14 +42,14 @@ export class ProductsController {
     return this.addProducts.execute(data);
   }
 
-  @Get('/last-sales')
+  @Get('/last-sales-products')
   findLastProductsSold() {
     return this.findLastSalesProducts.execute();
   }
   
-  @Get('/last-shopping')
+  @Get('/last-shopping-products')
   findLastProductsPurchased() {
-    return this.findLastSalesProducts.execute();
+    return this.findLastShoppingProducts.execute();
   }
 
   @Get()

@@ -86,6 +86,29 @@ export class ShoppingService {
     });
   }
 
+  async findLastShopping() {
+    return await this.prisma.shopping.findMany({
+      take: 5,
+      orderBy: {
+        shopping_date: 'desc',
+      },
+      include: {
+        shoppingitens: {
+          select: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+            amount: true,
+            unit_price: true,
+            sub_total: true,
+          },
+        },
+      },
+    });
+  }
+
   async getTotalShoppingByPeriod(beginning: Date, end: Date) {
     return await this.prisma.shopping.count({
       where: {

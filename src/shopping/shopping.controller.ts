@@ -20,6 +20,7 @@ import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-value
 import { GetTotalShoppingByPeriodUseCase } from './usecases/get-total-shopping-by-period.usecase';
 import { GetTotalShoppingProductsByPeriodUseCase } from './usecases/get-total-shopping-products-by-period.usecase';
 import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-total-shopping-value-products-by-period.usecase';
+import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
 
 @Controller('shopping')
 export class ShoppingController {
@@ -34,6 +35,7 @@ export class ShoppingController {
     private readonly getTotalShoppingByPeriod: GetTotalShoppingByPeriodUseCase,
     private readonly getTotalShoppingProductsByPeriod: GetTotalShoppingProductsByPeriodUseCase,
     private readonly getTotalShoppingValueProductsByPeriod: GetTotalShoppingValueProductsByPeriodUseCase,
+    private readonly getQuantityOfProductsPurchasedByPeriod: GetQuantityOfProductsPurchasedByPeriodUseCase,
   ) {}
 
   @Post()
@@ -41,26 +43,14 @@ export class ShoppingController {
     return this.createShopping.execute(data);
   }
 
-  @Get()
-  findAll() {
-    return this.getAllShopping.execute();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.getOneShopping.execute(id);
-  }
-
   @Get('/values')
   findTotalValueShoppingByPeriod(@Query('range') range?: string) {
     return this.getTotalValueShoppingByPeriod.execute(range);
   }
-  @Get('/values/products/:id')
-  findTotalShoppingValueProductsByPeriod(
-    @Param('id') productId: string,
-    @Query('range') range?: string,
-  ) {
-    return this.getTotalShoppingValueProductsByPeriod.execute(productId, range);
+
+  @Get('/quantity-of-products-purchased')
+  findQuantityOfProductsPurchasedByPeriod(@Query('range') range?: string) {
+    return this.getQuantityOfProductsPurchasedByPeriod.execute(range);
   }
 
   @Get('/amount')
@@ -74,6 +64,24 @@ export class ShoppingController {
     @Query('range') range?: string,
   ) {
     return this.getTotalShoppingProductsByPeriod.execute(productId, range);
+  }
+
+  @Get()
+  findAll() {
+    return this.getAllShopping.execute();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.getOneShopping.execute(id);
+  }
+
+  @Get('/values/products/:id')
+  findTotalShoppingValueProductsByPeriod(
+    @Param('id') productId: string,
+    @Query('range') range?: string,
+  ) {
+    return this.getTotalShoppingValueProductsByPeriod.execute(productId, range);
   }
 
   @Patch(':id')

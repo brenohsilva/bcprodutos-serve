@@ -72,6 +72,20 @@ export class ShoppingService {
     });
   }
 
+  async findShoppingByPeriod(beginning: Date, end: Date) {
+    return this.prisma.shopping.findMany({
+      include: {
+        shoppingitens: true,
+      },
+      where: {
+        shopping_date: {
+          gte: beginning,
+          lte: end,
+        },
+      },
+    });
+  }
+
   async getTotalShoppingByPeriod(beginning: Date, end: Date) {
     return await this.prisma.shopping.count({
       where: {
@@ -99,7 +113,7 @@ export class ShoppingService {
         },
       },
     });
-    return total._sum.total_value || 0;
+    return total._sum.total_value.toFixed(2) || 0;
   }
 
   async getTotalValueShopping() {

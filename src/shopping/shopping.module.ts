@@ -11,6 +11,8 @@ import { GetTotalShoppingByPeriodUseCase } from './usecases/get-total-shopping-b
 import { GetTotalShoppingProductsByPeriodUseCase } from './usecases/get-total-shopping-products-by-period.usecase';
 import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-total-shopping-value-products-by-period.usecase';
 import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-values-shopping-by-period.usecase';
+import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
+import { ProductsService } from 'src/products/products.service';
 
 @Module({
   controllers: [ShoppingController],
@@ -25,6 +27,8 @@ import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-value
     GetTotalShoppingProductsByPeriodUseCase,
     GetTotalShoppingValueProductsByPeriodUseCase,
     GetTotalValueShoppingByPeriodUseCase,
+    GetQuantityOfProductsPurchasedByPeriodUseCase,
+    ProductsService,
     PrismaService,
   ],
 })

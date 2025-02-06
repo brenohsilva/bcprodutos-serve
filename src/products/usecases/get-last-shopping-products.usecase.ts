@@ -11,6 +11,7 @@ export class GetLastShoppingProductsUseCase {
       const products = response.map((item) => ({
         productId: item.productId,
         productName: item.product.name,
+        amount: item.amount,
         image: item.product.image,
         size: item.product.size,
         color: item.product.color,

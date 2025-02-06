@@ -13,6 +13,7 @@ export class GetLastSalesProductsUseCase {
         productName: item.product.name,
         image: item.product.image,
         size: item.product.size,
+        amount: item.amount,
         color: item.product.color,
         category: item.product.category,
         unitPrice: item.unit_price,

@@ -80,6 +80,28 @@ export class SalesService {
     });
   }
 
+  async findLastSales() {
+    return await this.prisma.sales.findMany({
+      include: {
+        salesitens: {
+          select: {
+            product: {
+              select: {
+                name: true,
+                category: true,
+                type: true,
+                size: true,
+                color: true,
+              },
+            },
+            amount: true,
+          },
+        },
+      },
+      take: 5,
+    });
+  }
+
   async findOne(id: number) {
     return await this.prisma.sales.findUnique({
       where: {

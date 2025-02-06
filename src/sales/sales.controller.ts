@@ -20,7 +20,8 @@ import { GetTotalSalesByPeriodUseCase } from './usecases/get-total-sales-by-peri
 import { GetTotalSalesProductsByPeriodUseCase } from './usecases/get-total-sales-products-by-period.usecase';
 import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-sales-value-produccts-by-period.usecase';
 import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-sales-of-products.usecase';
-import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period';
+import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period.usecase';
+import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
 
 @Controller('sales')
 export class SalesController {
@@ -34,8 +35,9 @@ export class SalesController {
     private readonly getTotalSalesByPeriod: GetTotalSalesByPeriodUseCase,
     private readonly getTotalSalesProductsByPeriod: GetTotalSalesProductsByPeriodUseCase,
     private readonly getTotalSalesValueProductsByPeriod: GetTotalSalesValueProductsByPeriodUseCase,
-    private readonly getQuantityOfSalesUseCase: GetQuantityOfSalesOfProductsUseCase,
+    private readonly getQuantityOfSales: GetQuantityOfSalesOfProductsUseCase,
     private readonly getQuantityOfProductsSoldByPeriod: GetQuantityOfProductsSoldByPeriodUseCase,
+    private readonly getLastSales: GetLastSalesUseCase,
   ) {}
 
   @Post()
@@ -46,6 +48,11 @@ export class SalesController {
   @Get()
   findAll() {
     return this.findAllSales.execute();
+  }
+
+  @Get('/last-sales')
+  findLastSales() {
+    return this.getLastSales.execute();
   }
 
   @Get('/values')
@@ -75,7 +82,7 @@ export class SalesController {
 
   @Get('quantity-by-products')
   findQuantityOfSalesOfProducts() {
-    return this.getQuantityOfSalesUseCase.execute();
+    return this.getQuantityOfSales.execute();
   }
 
   @Get('quantity-of-products-sold')

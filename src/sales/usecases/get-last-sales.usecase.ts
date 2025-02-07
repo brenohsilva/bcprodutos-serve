@@ -26,6 +26,8 @@ export class GetLastSalesUseCase {
         products: sale.salesitens.map((item) => ({
           ...item.product,
           amount: item.amount,
+          unit_price: item.unit_price,
+          sub_total: item.sub_total,
         })),
       }));
 

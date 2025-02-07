@@ -92,13 +92,18 @@ export class SalesService {
                 type: true,
                 size: true,
                 color: true,
+
               },
             },
             amount: true,
+            unit_price: true,
+            sub_total: true
           },
         },
       },
-      take: 5,
+      orderBy: {
+        sales_date: 'desc'
+      }
     });
   }
 

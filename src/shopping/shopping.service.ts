@@ -86,7 +86,7 @@ export class ShoppingService {
     });
   }
 
-  async findLastShopping() {
+  async findLatestShopping() {
     return await this.prisma.shopping.findMany({
       take: 5,
       orderBy: {

@@ -7,7 +7,7 @@ export class GetLastShoppingUseCase {
 
   async execute() {
     try {
-      const response = await this.shoppingService.findLastShopping();
+      const response = await this.shoppingService.findLatestShopping();
       const formattedResponse = response.map((shopping) => ({
         id: shopping.id,
         description: shopping.description,

@@ -8,19 +8,20 @@ datasource db {
 }
 
 model product {
-  id            Int             @id @default(autoincrement())
-  name          String          @db.VarChar(45)
-  image         String?         @db.VarChar(45)
-  amount        Int
-  type          String?         @db.VarChar(45)
-  size          Float?          @db.Float
-  color         String?         @db.VarChar(45)
-  category      String          @db.VarChar(45)
-  sales_price   Float           @db.Float
-  created_at    DateTime        @default(now()) @db.Timestamp(0)
-  updated_at    DateTime        @updatedAt @db.Timestamp(0)
-  salesitens    salesitens[]
-  shoppingitens shoppingitens[]
+  id             Int             @id @default(autoincrement())
+  name           String          @db.VarChar(45)
+  image          String?         @db.VarChar(45)
+  amount         Int
+  type           String?         @db.VarChar(45)
+  size           Float?          @db.Float
+  color          String?         @db.VarChar(45)
+  category       String          @db.VarChar(45)
+  shopping_price Float?          @db.Float
+  sales_price    Float           @db.Float
+  created_at     DateTime        @default(now()) @db.Timestamp(0)
+  updated_at     DateTime        @updatedAt @db.Timestamp(0)
+  salesitens     salesitens[]
+  shoppingitens  shoppingitens[]
 }
 
 model sales {

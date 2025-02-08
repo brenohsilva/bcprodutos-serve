@@ -21,8 +21,8 @@ export class ShoppingService {
         shoppingId: shopping.id,
         productId: Number(item.productId),
         amount: item.amount,
-        unit_price: item.unit_price,
-        sub_total: item.amount * item.unit_price,
+        unit_price: item.sub_total / item.amount,
+        sub_total: item.sub_total,
       }));
 
       await this.prisma.shoppingitens.createMany({
@@ -31,12 +31,23 @@ export class ShoppingService {
 
       await Promise.all(
         data.itens.map(async (item) => {
+          const product = await this.prisma.product.findUnique({
+            where: { id: Number(item.productId) },
+            select: { amount: true, shopping_price: true },
+          });
+
+          const newUnitPrice = item.sub_total / item.amount;
+          let updatedShoppingPrice = newUnitPrice;
+
+          if (product.shopping_price > 0) {
+            updatedShoppingPrice = (product.shopping_price + newUnitPrice) / 2;
+          }
+
           await this.prisma.product.update({
             where: { id: Number(item.productId) },
             data: {
-              amount: {
-                increment: item.amount,
-              },
+              amount: { increment: item.amount },
+              shopping_price: updatedShoppingPrice,
             },
           });
         }),

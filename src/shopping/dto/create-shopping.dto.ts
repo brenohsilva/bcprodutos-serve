@@ -3,7 +3,8 @@ import { CreateProductDto } from 'src/products/dto/create-product.dto';
 export class ShoppingItens {
   productId: number | string;
   amount: number;
-  unit_price: number;
+  unit_price?: number;
+  sub_total?: number;
 }
 
 export class CreateShoppingDto {

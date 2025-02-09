@@ -16,6 +16,8 @@ import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-
 import { ProductsService } from 'src/products/products.service';
 import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period.usecase';
 import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
+import { RegisterProfitUseCase } from './usecases/register-profit-day.usecase';
+import { OverViewService } from 'src/overview/overview.service';
 
 @Module({
   controllers: [SalesController],
@@ -23,6 +25,7 @@ import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
     SalesService,
     PrismaService,
     ProductsService,
+    OverViewService,
     FindAllSalesUseCase,
     FindOneSaleUseCase,
     DeleteSaleUseCase,
@@ -35,6 +38,7 @@ import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
     GetQuantityOfSalesOfProductsUseCase,
     GetQuantityOfProductsSoldByPeriodUseCase,
     GetLastSalesUseCase,
+    RegisterProfitUseCase,
   ],
 })
 export class SalesModule {}

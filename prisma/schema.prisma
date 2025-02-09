@@ -35,6 +35,7 @@ model sales {
   payment_method    String?      @db.VarChar(45)
   sales_date        DateTime     @default(now()) @db.Timestamp(0)
   salesitens        salesitens[]
+  profit            profits?
 }
 
 model salesitens {
@@ -74,4 +75,13 @@ model shoppingitens {
 
   @@unique([shoppingId, productId], map: "ShoppingItens_shoppingId_productId_key")
   @@index([productId], map: "ShoppingItens_productId_fkey")
+}
+
+model profits {
+  id         Int      @id @default(autoincrement())
+  salesId    Int      @unique
+  day        DateTime @default(now()) @db.Timestamp(0)
+  profit_day Float    @db.Float
+
+  sale sales @relation(fields: [salesId], references: [id])
 }

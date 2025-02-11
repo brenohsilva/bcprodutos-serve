@@ -12,12 +12,14 @@ import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.
 import { GetLastShoppingProductsUseCase } from './usecases/get-last-shopping-products.usecase';
 import { GetStocksProductsQuantityUseCase } from './usecases/get-stocks-products-quantity.usecase';
 import { GetQuantityOfProductsByNameUseCase } from './usecases/get-quantity-of-products-by-name.usecase';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [ProductsController],
   providers: [
     ProductsService,
     PrismaService,
+    JwtService,
     GetAllProductsUseCase,
     GetOneProductUseCase,
     AddProductsUseCase,

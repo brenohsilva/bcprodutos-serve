@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "hash": "node hash-generator.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,11 +24,14 @@
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^11.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.22.0",
+    "bcrypt": "^5.1.1",
     "class-validator": "^0.14.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },

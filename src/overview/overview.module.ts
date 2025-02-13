@@ -9,12 +9,14 @@ import { SalesService } from 'src/sales/sales.service';
 import { ShoppingService } from 'src/shopping/shopping.service';
 import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount-in-products.usecase';
 import { ProductsService } from 'src/products/products.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [OverViewController],
   providers: [
     OverViewService,
     PrismaService,
+    JwtService,
     GetProfitUseCase,
     GetTotalValueSalesByPeriodUseCase,
     GetTotalValueShoppingByPeriodUseCase,

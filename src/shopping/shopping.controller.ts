@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ShoppingService } from './shopping.service';
 import { CreateShoppingDto } from './dto/create-shopping.dto';
@@ -22,7 +23,8 @@ import { GetTotalShoppingProductsByPeriodUseCase } from './usecases/get-total-sh
 import { GetTotalShoppingValueProductsByPeriodUseCase } from './usecases/get-total-shopping-value-products-by-period.usecase';
 import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
 import { GetLastShoppingUseCase } from './usecases/get-latest-shopping.usecase';
-
+import { AuthGuard } from 'src/auth/auth.guard';
+@UseGuards(AuthGuard)
 @Controller('shopping')
 export class ShoppingController {
   constructor(

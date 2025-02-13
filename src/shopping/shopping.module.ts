@@ -14,11 +14,13 @@ import { GetTotalValueShoppingByPeriodUseCase } from './usecases/get-total-value
 import { GetQuantityOfProductsPurchasedByPeriodUseCase } from './usecases/get-quantity-of-products-purchased-by-period.usecase';
 import { ProductsService } from 'src/products/products.service';
 import { GetLastShoppingUseCase } from './usecases/get-latest-shopping.usecase';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [ShoppingController],
   providers: [
     ShoppingService,
+    JwtService,
     CreateShoppingUseCase,
     GetAllShoppingUseCase,
     GetOneShoppingUseCase,

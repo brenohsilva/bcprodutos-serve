@@ -18,6 +18,7 @@ import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantit
 import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
 import { RegisterProfitUseCase } from './usecases/register-profit-day.usecase';
 import { OverViewService } from 'src/overview/overview.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [SalesController],
@@ -26,6 +27,7 @@ import { OverViewService } from 'src/overview/overview.service';
     PrismaService,
     ProductsService,
     OverViewService,
+    JwtService,
     FindAllSalesUseCase,
     FindOneSaleUseCase,
     DeleteSaleUseCase,

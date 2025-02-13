@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FindAllSalesUseCase } from './usecases/find-all-sales.usecase';
 import { FindOneSaleUseCase } from './usecases/find-one-sale.usecase';
@@ -22,7 +23,8 @@ import { GetTotalSalesValueProductsByPeriodUseCase } from './usecases/get-total-
 import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-sales-of-products.usecase';
 import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period.usecase';
 import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
-
+import { AuthGuard } from 'src/auth/auth.guard';
+@UseGuards(AuthGuard)
 @Controller('sales')
 export class SalesController {
   constructor(

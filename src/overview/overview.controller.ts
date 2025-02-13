@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount-in-products.usecase';
-
+import { AuthGuard } from 'src/auth/auth.guard';
+@UseGuards(AuthGuard)
 @Controller('overview')
 export class OverViewController {
   constructor(

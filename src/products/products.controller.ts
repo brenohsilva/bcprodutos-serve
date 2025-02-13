@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -21,7 +22,9 @@ import { GetLastSalesProductsUseCase } from './usecases/get-last-sales-products.
 import { GetStocksProductsQuantityUseCase } from './usecases/get-stocks-products-quantity.usecase';
 import { GetQuantityOfProductsByNameUseCase } from './usecases/get-quantity-of-products-by-name.usecase';
 import { GetLastShoppingProductsUseCase } from './usecases/get-last-shopping-products.usecase';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -66,7 +69,6 @@ export class ProductsController {
   findStockProductQuantity(){
     return this.findStockProductsQuantity.execute()
   }
-
 
   @Get(':id')
   findOne(@Param('id') id: string) {

@@ -13,13 +13,13 @@ model product {
   image          String?         @db.VarChar(45)
   amount         Int
   type           String?         @db.VarChar(45)
-  size           Float?          @db.Float
+  size           Int?         
   color          String?         @db.VarChar(45)
   category       String          @db.VarChar(45)
-  shopping_price Float?          @db.Float
-  sales_price    Float           @db.Float
+  shopping_price Decimal?          @db.Decimal(10,2)
   created_at     DateTime        @default(now()) @db.Timestamp(0)
   updated_at     DateTime        @updatedAt @db.Timestamp(0)
+  sales_price    Decimal           @db.Decimal(10,2)
   salesitens     salesitens[]
   shoppingitens  shoppingitens[]
 }
@@ -27,11 +27,11 @@ model product {
 model sales {
   id                Int          @id @default(autoincrement())
   description       String?      @db.VarChar(45)
-  total_gross_value Float        @db.Float
-  total_net_value   Float        @db.Float
-  additional        Float?       @db.Float
-  discount          Float?       @db.Float
-  coast             Float        @db.Float
+  total_gross_value Decimal        @db.Decimal(10,2)
+  total_net_value   Decimal        @db.Decimal(10,2)
+  additional        Decimal?       @db.Decimal(10,2)
+  discount          Decimal?       @db.Decimal(10,2)
+  coast             Decimal        @db.Decimal(10,2)
   payment_method    String?      @db.VarChar(45)
   sales_date        DateTime     @default(now()) @db.Timestamp(0)
   salesitens        salesitens[]
@@ -43,8 +43,8 @@ model salesitens {
   salesId    Int
   productId  Int
   amount     Int
-  unit_price Float   @db.Float
-  sub_total  Float   @db.Float
+  unit_price Decimal   @db.Decimal(10,2)
+  sub_total  Decimal   @db.Decimal(10,2)
   product    product @relation(fields: [productId], references: [id], map: "SalesItens_productId_fkey")
   sales      sales   @relation(fields: [salesId], references: [id], map: "SalesItens_salesId_fkey")
 
@@ -55,7 +55,7 @@ model salesitens {
 model shopping {
   id             Int             @id @default(autoincrement())
   description    String?         @db.VarChar(45)
-  total_value    Float           @db.Float
+  total_value    Decimal           @db.Decimal(10,2)
   shopping_date  DateTime        @default(now()) @db.Timestamp(0)
   payment_method String?         @db.VarChar(45)
   installment    Int?
@@ -68,8 +68,8 @@ model shoppingitens {
   shoppingId Int
   productId  Int
   amount     Int
-  unit_price Float    @db.Float
-  sub_total  Float    @db.Float
+  unit_price Decimal    @db.Decimal(10,2)
+  sub_total  Decimal    @db.Decimal(10,2)
   product    product  @relation(fields: [productId], references: [id], map: "ShoppingItens_productId_fkey")
   shopping   shopping @relation(fields: [shoppingId], references: [id], map: "ShoppingItens_shoppingId_fkey")
 
@@ -81,7 +81,7 @@ model profits {
   id         Int      @id @default(autoincrement())
   salesId    Int      @unique
   day        DateTime @default(now()) @db.Timestamp(0)
-  profit_day Float    @db.Float
+  profit_day Decimal    @db.Decimal(10,2)
 
   sale sales @relation(fields: [salesId], references: [id])
 }

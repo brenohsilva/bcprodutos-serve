@@ -39,8 +39,9 @@ export class ShoppingService {
           const newUnitPrice = item.sub_total / item.amount;
           let updatedShoppingPrice = newUnitPrice;
 
-          if (product.shopping_price > 0) {
-            updatedShoppingPrice = (product.shopping_price + newUnitPrice) / 2;
+          if (Number(product.shopping_price) > 0) {
+            updatedShoppingPrice =
+              (Number(product.shopping_price) + newUnitPrice) / 2;
           }
 
           await this.prisma.product.update({
@@ -182,7 +183,7 @@ export class ShoppingService {
       },
     });
 
-    return total._sum.sub_total || 0;
+    return Number(total._sum.sub_total) || 0;
   }
 
   async findTotalShoppingProductByPeriod(

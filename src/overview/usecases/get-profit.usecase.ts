@@ -17,9 +17,12 @@ export class GetProfitUseCase {
         await this.getTotalValueShoppingByPeriodUseCase.execute('month');
 
       const data = {
-        sales_value: salesValueByMonth.data,
+        sales_value: salesValueByMonth.data.liquido,
         shopping_value: shoppingValueByMoth.data,
-        profit: (salesValueByMonth.data || 0) - (shoppingValueByMoth.data || 0),
+        profit: (
+          (Number(salesValueByMonth.data.liquido) || 0) - //VERIFICAR ISSO, DEU ERRO APÓS RETORNAR O VALOR LIQUIDO E BRUTO
+          (Number(shoppingValueByMoth.data) || 0)
+        ).toFixed(2),
       };
 
       return {

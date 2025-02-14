@@ -9,7 +9,7 @@ export class GetRevenueAmountInProductsUseCase {
     try {
       const products = await this.productService.findAll();
       const totalRevenue = products.reduce((acc, product) => {
-        return acc + product.sales_price * product.amount;
+        return acc + Number(product.sales_price) * product.amount;
       }, 0);
 
       return {

@@ -184,7 +184,7 @@ export class SalesService {
       },
     });
 
-    return total._sum.sub_total || 0;
+    return Number(total._sum.sub_total) || 0;
   }
 
   async findTotalSalesProductByPeriod(

@@ -19,7 +19,6 @@ export class GetProfitUseCase {
       const total = response.reduce((acc, profit) => {
         return acc + Number(profit.profit_day);
       }, 0);
-      console.log(total);
       return {
         success: true,
         data: total,

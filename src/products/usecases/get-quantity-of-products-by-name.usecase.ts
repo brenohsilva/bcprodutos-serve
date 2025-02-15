@@ -9,10 +9,13 @@ export class GetQuantityOfProductsByNameUseCase {
     try {
       const products = await this.productsService.findAll();
 
-      const productCounts = products.reduce((acc, product) => {
-        acc[product.name] = ((acc[product.name] || 0) + 1) * product.amount;
-        return acc;
-      }, {});
+      const productCounts = products.reduce(
+        (acc, product) => {
+          acc[product.name] = (acc[product.name] || 0) + product.amount;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       return {
         success: true,

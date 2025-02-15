@@ -15,6 +15,16 @@ export class OverViewService {
     });
   }
 
+  async findProfits(firstDayOfMonth: Date, firstDayOfNextMonth: Date) {
+    return await this.prisma.profits.findMany({
+      where: {
+        day: {
+          gte: firstDayOfMonth,
+          lt: firstDayOfNextMonth,
+        },
+      },
+    });
+  }
   // async findShoppingValueByMonth(month: any) {
   //   return await this.prisma.shopping.findMany({
   //     where: {

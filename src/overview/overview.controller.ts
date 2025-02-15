@@ -1,22 +1,29 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { GetProfitUseCase } from './usecases/get-profit.usecase';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { GetBalanceUseCase } from './usecases/get-balance.usecase';
 import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount-in-products.usecase';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { GetProfitUseCase } from './usecases/get-profit.usecase';
 @UseGuards(AuthGuard)
 @Controller('overview')
 export class OverViewController {
   constructor(
-    private readonly getProfitUseCase: GetProfitUseCase,
+    private readonly getBalanceUseCase: GetBalanceUseCase,
     private readonly getRevenueAmountUseCase: GetRevenueAmountInProductsUseCase,
+    private readonly getProfitUseCase: GetProfitUseCase,
   ) {}
 
-  @Get('/profit')
-  findProfit() {
-    return this.getProfitUseCase.execute();
+  @Get('/balance')
+  findBalance() {
+    return this.getBalanceUseCase.execute();
   }
 
   @Get('/revenue')
   findRevenueAmount() {
     return this.getRevenueAmountUseCase.execute();
+  }
+
+  @Get('/profits')
+  findProfit(@Query('month') month?: string, @Query('year') year?: string) {
+    return this.getProfitUseCase.execute(Number(month), Number(year));
   }
 }

@@ -1,34 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { GetTotalValueSalesByPeriodUseCase } from 'src/sales/usecases/get-total-values-sales-by-period.usecase';
-import { GetTotalValueShoppingByPeriodUseCase } from 'src/shopping/usecases/get-total-values-shopping-by-period.usecase';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { OverViewService } from '../overview.service';
 
 @Injectable()
 export class GetProfitUseCase {
-  constructor(
-    private readonly getTotalValueSalesByPeriodUseCase: GetTotalValueSalesByPeriodUseCase,
-    private readonly getTotalValueShoppingByPeriodUseCase: GetTotalValueShoppingByPeriodUseCase,
-  ) {}
-
-  async execute() {
+  constructor(private readonly overViewServcice: OverViewService) {}
+  async execute(month?: number, year?: number) {
     try {
-      const salesValueByMonth =
-        await this.getTotalValueSalesByPeriodUseCase.execute('month');
-      const shoppingValueByMoth =
-        await this.getTotalValueShoppingByPeriodUseCase.execute('month');
+      const now = new Date();
+      const selectedYear = year && !isNaN(year) ? year : now.getFullYear();
+      const selectedMonth = month && !isNaN(month) ? month : now.getMonth() + 1;
+      const firstDayOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
+      const firstDayOfNextMonth = new Date(selectedYear, selectedMonth, 1);
+      const response = await this.overViewServcice.findProfits(
+        firstDayOfMonth,
+        firstDayOfNextMonth,
+      );
 
-      const data = {
-        sales_value: salesValueByMonth.data.liquido,
-        shopping_value: shoppingValueByMoth.data,
-        profit: (
-          (Number(salesValueByMonth.data.liquido) || 0) - //VERIFICAR ISSO, DEU ERRO APÓS RETORNAR O VALOR LIQUIDO E BRUTO
-          (Number(shoppingValueByMoth.data) || 0)
-        ).toFixed(2),
-      };
-
+      const total = response.reduce((acc, profit) => {
+        return acc + Number(profit.profit_day);
+      }, 0);
+      console.log(total);
       return {
         success: true,
-        data,
+        data: total,
       };
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Erro ao contabilizar os lucros. Tente novamente mais tarde.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

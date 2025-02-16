@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(private readonly jwtService: JwtService) {}
 
-  async validateUser(username: string, password: string): Promise<string> {
+  async validateUser(username: string, password: string) {
     if (username !== this.adminUsername) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
@@ -25,6 +25,34 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas');
     }
 
-    return this.jwtService.sign({ username });
+    return this.generateTokens(username);
+  }
+
+  generateTokens(username: string) {
+    const payload = { username };
+
+    const access_token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1h',
+    });
+
+    const refresh_token = this.jwtService.sign(payload, {
+      secret: process.env.REFRESH_SECRET,
+      expiresIn: '7d',
+    });
+
+    return { access_token, refresh_token };
+  }
+
+  async refreshAccessToken(refresh_token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refresh_token, {
+        secret: process.env.REFRESH_SECRET,
+      });
+
+      return this.generateTokens(payload.username);
+    } catch (error) {
+      throw new UnauthorizedException('Refresh token inválido ou expirado');
+    }
   }
 }

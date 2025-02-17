@@ -11,6 +11,7 @@ import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount
 import { ProductsService } from 'src/products/products.service';
 import { JwtService } from '@nestjs/jwt';
 import { GetProfitUseCase } from './usecases/get-profit.usecase';
+import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
 
 @Module({
   controllers: [OverViewController],
@@ -26,6 +27,7 @@ import { GetProfitUseCase } from './usecases/get-profit.usecase';
     GetTotalValueShoppingByPeriodUseCase,
     GetRevenueAmountInProductsUseCase,
     GetProfitUseCase,
+    GetDailyProfitsUseCase
   ],
 })
 export class OverViewModule {}

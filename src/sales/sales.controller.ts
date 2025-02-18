@@ -24,6 +24,7 @@ import { GetQuantityOfSalesOfProductsUseCase } from './usecases/get-quantity-of-
 import { GetQuantityOfProductsSoldByPeriodUseCase } from './usecases/get-quantity-of-products-sold-by-period.usecase';
 import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
 @UseGuards(AuthGuard)
 @Controller('sales')
 export class SalesController {
@@ -40,6 +41,7 @@ export class SalesController {
     private readonly getQuantityOfSales: GetQuantityOfSalesOfProductsUseCase,
     private readonly getQuantityOfProductsSoldByPeriod: GetQuantityOfProductsSoldByPeriodUseCase,
     private readonly getLastSales: GetLastSalesUseCase,
+    private readonly getDailySales: GetDailySalesUseCase,
   ) {}
 
   @Post()
@@ -50,6 +52,11 @@ export class SalesController {
   @Get()
   findAll() {
     return this.findAllSales.execute();
+  }
+
+  @Get('/daily-sales')
+  findDailySales() {
+    return this.getDailySales.execute();
   }
 
   @Get('/last-sales')

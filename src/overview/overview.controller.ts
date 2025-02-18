@@ -33,6 +33,4 @@ export class OverViewController {
   findProfit(@Query('month') month?: string, @Query('year') year?: string) {
     return this.getProfitUseCase.execute(Number(month), Number(year));
   }
-
-  
 }

@@ -19,6 +19,7 @@ import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
 import { RegisterProfitUseCase } from './usecases/register-profit-day.usecase';
 import { OverViewService } from 'src/overview/overview.service';
 import { JwtService } from '@nestjs/jwt';
+import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
 
 @Module({
   controllers: [SalesController],
@@ -41,6 +42,7 @@ import { JwtService } from '@nestjs/jwt';
     GetQuantityOfProductsSoldByPeriodUseCase,
     GetLastSalesUseCase,
     RegisterProfitUseCase,
+    GetDailySalesUseCase,
   ],
 })
 export class SalesModule {}

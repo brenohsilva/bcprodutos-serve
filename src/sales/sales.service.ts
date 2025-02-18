@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UpdateSalesDto } from './dto/update-sale.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateSalesDto } from './dto/create-sale.dto';

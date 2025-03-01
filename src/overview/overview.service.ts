@@ -25,11 +25,36 @@ export class OverViewService {
       },
     });
   }
-  // async findShoppingValueByMonth(month: any) {
-  //   return await this.prisma.shopping.findMany({
-  //     where: {
-  //       shopping_date: {},
-  //     },
-  //   });
-  // }
+  async findSalesItensByMonth(
+    firstDayOfMonth: Date,
+    firstDayOfNextMonth: Date,
+  ) {
+    return await this.prisma.salesitens.findMany({
+      include: {
+        product: {
+          select: {
+            name: true,
+            image: true,
+            size: true,
+            color: true,
+            category: true,
+            type: true
+          }
+        },
+        sales: {
+          select: {
+            sales_date: true
+          }
+        }
+      },
+      where: {
+        sales: {
+          sales_date: {
+            gte: firstDayOfMonth,
+            lt: firstDayOfNextMonth,
+          },
+        },
+      },
+    });
+  }
 }

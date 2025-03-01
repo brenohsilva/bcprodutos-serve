@@ -60,13 +60,16 @@ export class SalesController {
   }
 
   @Get('/last-sales')
-  findLastSales() {
-    return this.getLastSales.execute();
+  findLastSales(@Query('month') month?: string) {
+    return this.getLastSales.execute(month);
   }
 
   @Get('/values')
-  findTotalValueSalesByPeriod(@Query('range') range?: string) {
-    return this.getTotalValueSalesByPeriod.execute(range);
+  findTotalValueSalesByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getTotalValueSalesByPeriod.execute(range, month);
   }
   @Get('/values/products/:id')
   findTotalSalesValueProductsByPeriod(
@@ -77,8 +80,11 @@ export class SalesController {
   }
 
   @Get('/amount')
-  findTotalSalesByPeriod(@Query('range') range?: string) {
-    return this.getTotalSalesByPeriod.execute(range);
+  findTotalSalesByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getTotalSalesByPeriod.execute(range, month);
   }
 
   @Get('/amount/products/:id')
@@ -95,8 +101,11 @@ export class SalesController {
   }
 
   @Get('quantity-of-products-sold')
-  findQuantityOfProductsSoldByPeriod(@Query('range') range?: string) {
-    return this.getQuantityOfProductsSoldByPeriod.execute(range);
+  findQuantityOfProductsSoldByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getQuantityOfProductsSoldByPeriod.execute(range, month);
   }
 
   @Get(':id')

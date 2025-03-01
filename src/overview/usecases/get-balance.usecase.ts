@@ -9,12 +9,12 @@ export class GetBalanceUseCase {
     private readonly getTotalValueShoppingByPeriodUseCase: GetTotalValueShoppingByPeriodUseCase,
   ) {}
 
-  async execute() {
+  async execute(month?: string) {
     try {
       const salesValueByMonth =
-        await this.getTotalValueSalesByPeriodUseCase.execute('month');
+        await this.getTotalValueSalesByPeriodUseCase.execute('month', month);
       const shoppingValueByMoth =
-        await this.getTotalValueShoppingByPeriodUseCase.execute('month');
+        await this.getTotalValueShoppingByPeriodUseCase.execute('month', month);
 
       const data = {
         sales_value: salesValueByMonth.data.liquido,

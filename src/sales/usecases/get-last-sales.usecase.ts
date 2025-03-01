@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { SalesService } from '../sales.service';
 import { ProductsService } from 'src/products/products.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class GetLastSalesUseCase {
@@ -9,9 +10,40 @@ export class GetLastSalesUseCase {
     private readonly productsService: ProductsService,
   ) {}
 
-  async execute() {
+  async execute(month?: string) {
     try {
-      const response = await this.salesService.findLastSales();
+      let startDate: Date;
+      let endDate: Date;
+      const now = new Date();
+      const selectedYear = now.getFullYear();
+      let selectedMonth = now.getMonth() + 1;
+
+      if (month) {
+        const monthNumber = parseInt(month, 10);
+        if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+          throw new HttpException(
+            'Mês inválido. O valor deve estar entre 1 e 12.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+        selectedMonth = monthNumber;
+      }
+
+      startDate = new Date(selectedYear, selectedMonth - 1, 1);
+      endDate = new Date(selectedYear, selectedMonth, 0, 23, 59, 59);
+
+      const response = await this.salesService.findLastSales(
+        startDate,
+        endDate,
+      );
+
+      if (!response || response.length === 0) {
+        return {
+          success: true,
+          data: [],
+          message: 'Nenhuma venda encontrada para o período selecionado.',
+        };
+      }
 
       const formattedResponse = response.map((sale) => ({
         id: sale.id,
@@ -22,7 +54,7 @@ export class GetLastSalesUseCase {
         discount: sale.discount,
         coast: sale.coast,
         payment_method: sale.payment_method,
-        sales_date: sale.sales_date,
+        sales_date: moment(sale.sales_date).format('DD/MM/YYYY HH:mm'),
         products: sale.salesitens.map((item) => ({
           ...item.product,
           amount: item.amount,
@@ -36,11 +68,11 @@ export class GetLastSalesUseCase {
         data: formattedResponse,
       };
     } catch (error) {
-      return {
-        success: false,
-        message: 'Erro ao buscar as vendas',
-        error: error.message,
-      };
+      console.error('Erro ao buscar as vendas:', error);
+      throw new HttpException(
+        'Erro ao buscar as vendas. Tente novamente mais tarde.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -4,6 +4,7 @@ import { GetRevenueAmountInProductsUseCase } from './usecases/get-revenue-amount
 import { AuthGuard } from 'src/auth/auth.guard';
 import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
+import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.usecase';
 @UseGuards(AuthGuard)
 @Controller('overview')
 export class OverViewController {
@@ -12,11 +13,12 @@ export class OverViewController {
     private readonly getRevenueAmountUseCase: GetRevenueAmountInProductsUseCase,
     private readonly getProfitUseCase: GetProfitUseCase,
     private readonly getDailyProfitUseCase: GetDailyProfitsUseCase,
+    private readonly getItensSoldByMonthUseCase: GetItensSoldByMonthUseCase
   ) {}
 
   @Get('/balance')
-  findBalance() {
-    return this.getBalanceUseCase.execute();
+  findBalance(@Query('month') month?: string) {
+    return this.getBalanceUseCase.execute(month);
   }
 
   @Get('/revenue')
@@ -25,8 +27,13 @@ export class OverViewController {
   }
 
   @Get('/daily-profits')
-  findDailyProfits() {
-    return this.getDailyProfitUseCase.execute();
+  findDailyProfits(@Query('month') month?: string) {
+    return this.getDailyProfitUseCase.execute(month);
+  }
+
+  @Get('/itens-sold')
+  findProductsSold(@Query('month') month?: string) {
+    return this.getItensSoldByMonthUseCase.execute(month);
   }
 
   @Get('/profits')

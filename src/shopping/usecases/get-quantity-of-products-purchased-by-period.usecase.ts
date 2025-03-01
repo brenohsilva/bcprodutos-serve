@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ProductsService } from 'src/products/products.service';
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
 import { ShoppingService } from '../shopping.service';
@@ -10,19 +10,38 @@ export class GetQuantityOfProductsPurchasedByPeriodUseCase {
     private readonly productsService: ProductsService,
   ) {}
 
-  async execute(period: string) {
+  async execute(period: string, month?: string) {
     try {
       const today = new Date();
       let beginning: Date;
       let end: Date;
-      if (period == 'week') {
+
+      if (period === 'week') {
         beginning = startOfWeek(today, { weekStartsOn: 0 });
         end = endOfWeek(today, { weekStartsOn: 0 });
+      } else if (period === 'month') {
+        if (month) {
+          const monthNumber = parseInt(month, 10);
+          if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+            throw new HttpException(
+              'Mês inválido. O valor deve estar entre 1 e 12.',
+              HttpStatus.BAD_REQUEST,
+            );
+          }
+          const year = today.getFullYear();
+          beginning = new Date(year, monthNumber - 1, 1);
+          end = endOfMonth(beginning);
+        } else {
+          beginning = startOfMonth(today);
+          end = endOfMonth(today);
+        }
+      } else {
+        throw new HttpException(
+          'Período inválido. Use "week" ou "month".',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      if (period == 'month') {
-        beginning = startOfMonth(today);
-        end = endOfMonth(today);
-      }
+
       const response = await this.shoppingService.findShoppingByPeriod(
         beginning,
         end,
@@ -46,20 +65,25 @@ export class GetQuantityOfProductsPurchasedByPeriodUseCase {
           const product = await this.productsService.findOne(Number(productId));
           return {
             ...product,
-            total_sold: totalShoppingByProduct[Number(productId)],
+            total_purchased: totalShoppingByProduct[Number(productId)],
           };
         }),
       );
 
-      const productSold = detailedProducts.reduce((sum, product) => {
-        sum += product.total_sold;
-        return sum;
+      const totalProductsPurchased = detailedProducts.reduce((sum, product) => {
+        return sum + product.total_purchased;
       }, 0);
 
-      return { success: true, data: productSold };
+      return { success: true, data: totalProductsPurchased };
     } catch (error) {
-      console.error('Error counting total sales of products:', error);
-      throw error;
+      console.error(
+        'Erro ao contar a quantidade total de produtos comprados:',
+        error,
+      );
+      throw new HttpException(
+        'Erro ao contar a quantidade total de produtos comprados. Tente novamente mais tarde.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

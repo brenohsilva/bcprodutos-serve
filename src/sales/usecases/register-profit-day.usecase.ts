@@ -7,7 +7,6 @@ export class RegisterProfitUseCase {
 
   async execute(existingProducts: any[], sales: any) {
     try {
-      console.log(existingProducts);
       const productCostMap = new Map(
         existingProducts.map((p) => [p.id, p.shopping_price]),
       );

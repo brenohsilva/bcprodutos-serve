@@ -39,7 +39,7 @@ export class ShoppingController {
     private readonly getTotalShoppingProductsByPeriod: GetTotalShoppingProductsByPeriodUseCase,
     private readonly getTotalShoppingValueProductsByPeriod: GetTotalShoppingValueProductsByPeriodUseCase,
     private readonly getQuantityOfProductsPurchasedByPeriod: GetQuantityOfProductsPurchasedByPeriodUseCase,
-    private readonly getLastShopping: GetLastShoppingUseCase
+    private readonly getLastShopping: GetLastShoppingUseCase,
   ) {}
 
   @Post()
@@ -48,18 +48,27 @@ export class ShoppingController {
   }
 
   @Get('/values')
-  findTotalValueShoppingByPeriod(@Query('range') range?: string) {
-    return this.getTotalValueShoppingByPeriod.execute(range);
+  findTotalValueShoppingByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getTotalValueShoppingByPeriod.execute(range, month);
   }
 
   @Get('/quantity-of-products-purchased')
-  findQuantityOfProductsPurchasedByPeriod(@Query('range') range?: string) {
-    return this.getQuantityOfProductsPurchasedByPeriod.execute(range);
+  findQuantityOfProductsPurchasedByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getQuantityOfProductsPurchasedByPeriod.execute(range, month);
   }
 
   @Get('/amount')
-  findTotalShoppingByPeriod(@Query('range') range?: string) {
-    return this.getTotalShoppingByPeriod.execute(range);
+  findTotalShoppingByPeriod(
+    @Query('range') range?: string,
+    @Query('month') month?: string,
+  ) {
+    return this.getTotalShoppingByPeriod.execute(range, month);
   }
 
   @Get('/amount/products/:id')
@@ -71,8 +80,8 @@ export class ShoppingController {
   }
 
   @Get('/latest')
-  findLastProducts(){
-    return this.getLastShopping.execute()
+  findLastProducts() {
+    return this.getLastShopping.execute();
   }
 
   @Get()

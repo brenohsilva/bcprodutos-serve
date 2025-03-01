@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { SalesService } from '../sales.service';
 import { ProductsService } from 'src/products/products.service';
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
@@ -10,19 +10,38 @@ export class GetQuantityOfProductsSoldByPeriodUseCase {
     private readonly productsService: ProductsService,
   ) {}
 
-  async execute(period: string) {
+  async execute(period: string, month?: string) {
     try {
       const today = new Date();
       let beginning: Date;
       let end: Date;
-      if (period == 'week') {
+
+      if (period === 'week') {
         beginning = startOfWeek(today, { weekStartsOn: 0 });
         end = endOfWeek(today, { weekStartsOn: 0 });
+      } else if (period === 'month') {
+        if (month) {
+          const monthNumber = parseInt(month, 10);
+          if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+            throw new HttpException(
+              'Mês inválido. O valor deve estar entre 1 e 12.',
+              HttpStatus.BAD_REQUEST,
+            );
+          }
+          const year = today.getFullYear();
+          beginning = new Date(year, monthNumber - 1, 1);
+          end = endOfMonth(beginning);
+        } else {
+          beginning = startOfMonth(today);
+          end = endOfMonth(today);
+        }
+      } else {
+        throw new HttpException(
+          'Período inválido. Use "week" ou "month".',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      if (period == 'month') {
-        beginning = startOfMonth(today);
-        end = endOfMonth(today);
-      }
+
       const response = await this.salesService.findSalesByPeriod(
         beginning,
         end,
@@ -51,15 +70,20 @@ export class GetQuantityOfProductsSoldByPeriodUseCase {
         }),
       );
 
-      const productSold = detailedProducts.reduce((sum, product) => {
-        sum += product.total_sold;
-        return sum;
+      const totalProductsSold = detailedProducts.reduce((sum, product) => {
+        return sum + product.total_sold;
       }, 0);
 
-      return { success: true, data: productSold };
+      return { success: true, data: totalProductsSold };
     } catch (error) {
-      console.error('Error counting total sales of products:', error);
-      throw error;
+      console.error(
+        'Erro ao contar a quantidade total de produtos vendidos:',
+        error,
+      );
+      throw new HttpException(
+        'Erro ao contar a quantidade total de produtos vendidos. Tente novamente mais tarde.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

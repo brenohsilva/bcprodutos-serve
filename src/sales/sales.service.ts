@@ -80,7 +80,7 @@ export class SalesService {
     });
   }
 
-  async findLastSales() {
+  async findLastSales(beginning: Date, end: Date) {
     return await this.prisma.sales.findMany({
       include: {
         salesitens: {
@@ -92,18 +92,23 @@ export class SalesService {
                 type: true,
                 size: true,
                 color: true,
-
               },
             },
             amount: true,
             unit_price: true,
-            sub_total: true
+            sub_total: true,
           },
         },
       },
       orderBy: {
-        sales_date: 'desc'
-      }
+        sales_date: 'desc',
+      },
+      where: {
+        sales_date: {
+          gte: beginning,
+          lte: end,
+        },
+      },
     });
   }
 

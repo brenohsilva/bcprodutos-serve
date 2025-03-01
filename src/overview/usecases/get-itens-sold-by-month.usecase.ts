@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OverViewService } from '../overview.service';
-import * as moment from 'moment';
 
 @Injectable()
-export class GetDailyProfitsUseCase {
+export class GetItensSoldByMonthUseCase {
   constructor(private readonly overViewService: OverViewService) {}
 
   async execute(month?: string) {
@@ -26,33 +25,24 @@ export class GetDailyProfitsUseCase {
       const firstDayOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
       const firstDayOfNextMonth = new Date(selectedYear, selectedMonth, 1);
 
-      const response = await this.overViewService.findProfits(
+      const response = await this.overViewService.findSalesItensByMonth(
         firstDayOfMonth,
         firstDayOfNextMonth,
       );
 
-      if (!response || response.length === 0) {
-        return {
-          success: true,
-          data: [],
-          message: 'Nenhum lucro encontrado para o período selecionado.',
-        };
-      }
+      const itemsSold = response.reduce(
+        (acc, item) => {
+          const productName = item.product.name;
+          acc[productName] = (acc[productName] || 0) + item.amount;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
-      const formattedData = response.map(({ id, day, profit_day }) => ({
-        id,
-        day: moment(day).format('DD/MM'),
-        profit_day,
-      }));
-
-      return {
-        success: true,
-        data: formattedData,
-      };
+      return itemsSold;
     } catch (error) {
-      console.error('Erro ao contabilizar os lucros:', error);
       throw new HttpException(
-        'Erro ao contabilizar os lucros. Tente novamente mais tarde.',
+        'Erro ao processar os itens vendidos.',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

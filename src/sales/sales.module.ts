@@ -20,6 +20,7 @@ import { RegisterProfitUseCase } from './usecases/register-profit-day.usecase';
 import { OverViewService } from 'src/overview/overview.service';
 import { JwtService } from '@nestjs/jwt';
 import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
+import { GetBestSalesOfMonthUseCase } from './usecases/get-best-sales-of-month.usecase';
 
 @Module({
   controllers: [SalesController],
@@ -43,6 +44,7 @@ import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
     GetLastSalesUseCase,
     RegisterProfitUseCase,
     GetDailySalesUseCase,
+    GetBestSalesOfMonthUseCase,
   ],
 })
 export class SalesModule {}

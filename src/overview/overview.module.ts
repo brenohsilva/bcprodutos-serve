@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
 import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.usecase';
+import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase';
 
 @Module({
   controllers: [OverViewController],
@@ -30,6 +31,7 @@ import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.u
     GetProfitUseCase,
     GetDailyProfitsUseCase,
     GetItensSoldByMonthUseCase,
+    GetBestProfitOfMonthUseCase,
   ],
 })
 export class OverViewModule {}

@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
 import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.usecase';
+import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase';
 @UseGuards(AuthGuard)
 @Controller('overview')
 export class OverViewController {
@@ -13,7 +14,8 @@ export class OverViewController {
     private readonly getRevenueAmountUseCase: GetRevenueAmountInProductsUseCase,
     private readonly getProfitUseCase: GetProfitUseCase,
     private readonly getDailyProfitUseCase: GetDailyProfitsUseCase,
-    private readonly getItensSoldByMonthUseCase: GetItensSoldByMonthUseCase
+    private readonly getItensSoldByMonthUseCase: GetItensSoldByMonthUseCase,
+    private readonly getBestProfitOfMonthUseCase: GetBestProfitOfMonthUseCase,
   ) {}
 
   @Get('/balance')
@@ -39,5 +41,10 @@ export class OverViewController {
   @Get('/profits')
   findProfit(@Query('month') month?: string, @Query('year') year?: string) {
     return this.getProfitUseCase.execute(Number(month), Number(year));
+  }
+
+  @Get('best-profits')
+  findBestProfits(@Query('month') month?: string) {
+    return this.getBestProfitOfMonthUseCase.execute(+month);
   }
 }

@@ -54,7 +54,7 @@ export class GetLastSalesUseCase {
         discount: sale.discount,
         coast: sale.coast,
         payment_method: sale.payment_method,
-        sales_date: moment(sale.sales_date).format('DD/MM/YYYY HH:mm'),
+        sales_date: moment(sale.sales_date),
         products: sale.salesitens.map((item) => ({
           ...item.product,
           amount: item.amount,

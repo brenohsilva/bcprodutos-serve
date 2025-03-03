@@ -17,11 +17,11 @@ export class GetBalanceUseCase {
         await this.getTotalValueShoppingByPeriodUseCase.execute('month', month);
 
       const data = {
-        sales_value: salesValueByMonth.data.liquido,
-        shopping_value: shoppingValueByMoth.data,
+        sales_value: salesValueByMonth.data.currentPeriod.liquido,
+        shopping_value: shoppingValueByMoth.data.currentPeriod,
         balance: (
-          (Number(salesValueByMonth.data.liquido) || 0) -
-          (Number(shoppingValueByMoth.data) || 0)
+          (Number(salesValueByMonth.data.currentPeriod.liquido) || 0) -
+          (Number(shoppingValueByMoth.data.currentPeriod) || 0)
         ).toFixed(2),
       };
 

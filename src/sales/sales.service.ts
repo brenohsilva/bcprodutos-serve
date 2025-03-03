@@ -137,9 +137,10 @@ export class SalesService {
       },
     });
     return {
-      bruto: total._sum.total_gross_value.toFixed(2) || 0,
-      liquido: total._sum.total_net_value.toFixed(2) || 0,
-    };
+  bruto: total._sum.total_gross_value ? total._sum.total_gross_value.toFixed(2) : "0.00",
+  liquido: total._sum.total_net_value ? total._sum.total_net_value.toFixed(2) : "0.00",
+};
+
   }
 
   async getTotalValueSales() {

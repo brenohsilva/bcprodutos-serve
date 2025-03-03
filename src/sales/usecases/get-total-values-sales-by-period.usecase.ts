@@ -1,6 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SalesService } from '../sales.service';
-import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
+import {
+  endOfMonth,
+  startOfMonth,
+  subMonths,
+  startOfWeek,
+  endOfWeek,
+  subWeeks,
+} from 'date-fns';
 
 @Injectable()
 export class GetTotalValueSalesByPeriodUseCase {
@@ -9,23 +16,19 @@ export class GetTotalValueSalesByPeriodUseCase {
   async execute(period: string, month?: string) {
     try {
       const today = new Date();
-      let beginning: Date;
-      let end: Date;
+      let currentPeriodStart: Date;
+      let currentPeriodEnd: Date;
+      let previousPeriodStart: Date;
+      let previousPeriodEnd: Date;
 
-      if (period === 'all') {
-        const response = await this.salesService.getTotalValueSales();
-        return {
-          success: true,
-          data: response,
-        };
-      }
+      // if (period === 'all') {
+      //   const response = await this.salesService.getTotalValueSales();
+      //   return { success: true, data: response };
+      // }
 
-      if (period === 'week') {
-        beginning = startOfWeek(today, { weekStartsOn: 0 });
-        end = endOfWeek(today, { weekStartsOn: 0 });
-      }
+      if (period === 'month' || period === 'week') {
+        let baseDate = today;
 
-      if (period === 'month') {
         if (month) {
           const monthNumber = parseInt(month, 10);
           if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
@@ -34,23 +37,58 @@ export class GetTotalValueSalesByPeriodUseCase {
               HttpStatus.BAD_REQUEST,
             );
           }
+          baseDate = new Date(
+            today.getFullYear(),
+            monthNumber - 1,
+            today.getDate(),
+          );
+        }
 
-          const year = today.getFullYear();
-          beginning = new Date(year, monthNumber - 1, 1);
-          end = endOfMonth(beginning);
-        } else {
-          beginning = startOfMonth(today);
-          end = endOfMonth(today);
+        if (period === 'month') {
+          currentPeriodStart = startOfMonth(baseDate);
+          currentPeriodEnd = endOfMonth(baseDate);
+
+          const prevMonth = subMonths(baseDate, 1);
+          previousPeriodStart = startOfMonth(prevMonth);
+          previousPeriodEnd = endOfMonth(prevMonth);
+        }
+
+        if (period === 'week') {
+          currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 }); // Domingo
+          currentPeriodEnd = endOfWeek(baseDate, { weekStartsOn: 0 });
+
+          const prevMonth = subMonths(baseDate, 1);
+          const prevMonthSameWeek = new Date(
+            prevMonth.getFullYear(),
+            prevMonth.getMonth(),
+            baseDate.getDate(),
+          );
+
+          previousPeriodStart = startOfWeek(prevMonthSameWeek, {
+            weekStartsOn: 0,
+          });
+          previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 0 });
         }
       }
 
-      const response = await this.salesService.getTotalValueSalesByPeriod(
-        beginning,
-        end,
-      );
+      const currentPeriodData =
+        await this.salesService.getTotalValueSalesByPeriod(
+          currentPeriodStart,
+          currentPeriodEnd,
+        );
+
+      const previousPeriodData =
+        await this.salesService.getTotalValueSalesByPeriod(
+          previousPeriodStart,
+          previousPeriodEnd,
+        );
+
       return {
         success: true,
-        data: response,
+        data: {
+          currentPeriod: currentPeriodData,
+          previousPeriod: previousPeriodData,
+        },
       };
     } catch (error) {
       console.error(error);

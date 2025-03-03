@@ -148,7 +148,7 @@ export class ShoppingService {
         },
       },
     });
-    return total._sum.total_value.toFixed(2) || 0;
+    return total._sum.total_value ? total._sum.total_value.toFixed(2) : '0.00';
   }
 
   async getTotalValueShopping() {

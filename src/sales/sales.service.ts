@@ -66,6 +66,24 @@ export class SalesService {
     });
   }
 
+  async findAllSalesItens(){
+    return this.prisma.salesitens.findMany({
+      include: {
+        sales: {
+          select: {
+            sales_date: true
+          }
+        },
+        product: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
+  }
+
   async findSalesByPeriod(beginning: Date, end: Date) {
     return this.prisma.sales.findMany({
       include: {

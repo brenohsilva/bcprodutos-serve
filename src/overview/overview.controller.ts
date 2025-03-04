@@ -6,6 +6,7 @@ import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
 import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.usecase';
 import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase';
+import { GetYearSummaryUseCase } from './usecases/get-year-summary.usecase';
 @UseGuards(AuthGuard)
 @Controller('overview')
 export class OverViewController {
@@ -16,11 +17,17 @@ export class OverViewController {
     private readonly getDailyProfitUseCase: GetDailyProfitsUseCase,
     private readonly getItensSoldByMonthUseCase: GetItensSoldByMonthUseCase,
     private readonly getBestProfitOfMonthUseCase: GetBestProfitOfMonthUseCase,
+    private readonly getYearSummaryUseCase: GetYearSummaryUseCase,
   ) {}
 
   @Get('/balance')
   findBalance(@Query('month') month?: string) {
     return this.getBalanceUseCase.execute(month);
+  }
+
+  @Get('/summary')
+  findYearSummary() {
+    return this.getYearSummaryUseCase.execute();
   }
 
   @Get('/revenue')

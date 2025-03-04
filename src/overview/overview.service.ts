@@ -15,6 +15,9 @@ export class OverViewService {
     });
   }
 
+  async getAllProfits() {
+    return await this.prisma.profits.findMany();
+  }
   async findProfits(firstDayOfMonth: Date, firstDayOfNextMonth: Date) {
     return await this.prisma.profits.findMany({
       where: {
@@ -38,14 +41,14 @@ export class OverViewService {
             size: true,
             color: true,
             category: true,
-            type: true
-          }
+            type: true,
+          },
         },
         sales: {
           select: {
-            sales_date: true
-          }
-        }
+            sales_date: true,
+          },
+        },
       },
       where: {
         sales: {

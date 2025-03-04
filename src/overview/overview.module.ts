@@ -14,6 +14,8 @@ import { GetProfitUseCase } from './usecases/get-profit.usecase';
 import { GetDailyProfitsUseCase } from './usecases/get-daily-profits.usecase';
 import { GetItensSoldByMonthUseCase } from './usecases/get-itens-sold-by-month.usecase';
 import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase';
+import { GetYearSummaryUseCase } from './usecases/get-year-summary.usecase';
+import { FindAllSalesUseCase } from 'src/sales/usecases/find-all-sales.usecase';
 
 @Module({
   controllers: [OverViewController],
@@ -25,6 +27,7 @@ import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase
     SalesService,
     ShoppingService,
     GetBalanceUseCase,
+    FindAllSalesUseCase,
     GetTotalValueSalesByPeriodUseCase,
     GetTotalValueShoppingByPeriodUseCase,
     GetRevenueAmountInProductsUseCase,
@@ -32,6 +35,7 @@ import { GetBestProfitOfMonthUseCase } from './usecases/get-best-profits.usecase
     GetDailyProfitsUseCase,
     GetItensSoldByMonthUseCase,
     GetBestProfitOfMonthUseCase,
+    GetYearSummaryUseCase,
   ],
 })
 export class OverViewModule {}

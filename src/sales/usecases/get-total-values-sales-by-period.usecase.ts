@@ -1,13 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SalesService } from '../sales.service';
-import {
-  endOfMonth,
-  startOfMonth,
-  subMonths,
-  startOfWeek,
-  endOfWeek,
-  subWeeks,
-} from 'date-fns';
+import { startOfMonth, subMonths, startOfWeek, endOfWeek } from 'date-fns';
 
 @Injectable()
 export class GetTotalValueSalesByPeriodUseCase {
@@ -20,11 +13,6 @@ export class GetTotalValueSalesByPeriodUseCase {
       let currentPeriodEnd: Date;
       let previousPeriodStart: Date;
       let previousPeriodEnd: Date;
-
-      // if (period === 'all') {
-      //   const response = await this.salesService.getTotalValueSales();
-      //   return { success: true, data: response };
-      // }
 
       if (period === 'month' || period === 'week') {
         let baseDate = today;
@@ -46,11 +34,19 @@ export class GetTotalValueSalesByPeriodUseCase {
 
         if (period === 'month') {
           currentPeriodStart = startOfMonth(baseDate);
-          currentPeriodEnd = endOfMonth(baseDate);
+          currentPeriodEnd = new Date(
+            baseDate.getFullYear(),
+            baseDate.getMonth(),
+            today.getDate(), // Pegamos até o dia atual do mês
+          );
 
           const prevMonth = subMonths(baseDate, 1);
           previousPeriodStart = startOfMonth(prevMonth);
-          previousPeriodEnd = endOfMonth(prevMonth);
+          previousPeriodEnd = new Date(
+            prevMonth.getFullYear(),
+            prevMonth.getMonth(),
+            today.getDate(), // Pegamos até o mesmo dia do mês anterior
+          );
         }
 
         if (period === 'week') {

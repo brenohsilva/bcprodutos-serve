@@ -12,18 +12,18 @@ export class ProductsService {
     return await this.prisma.product.create({ data });
   }
 
-  async findAll(){
-    return await this.prisma.product.findMany()
+  async findAll() {
+    return await this.prisma.product.findMany();
   }
 
   async findAllByFilter(filter: any) {
     let { category, type, size, name, sortBy, sortOrder } = filter;
-    size = Number(sortOrder)
+    size = Number(sortOrder);
     return await this.prisma.product.findMany({
       where: {
         ...(category && { category }),
-        ...(type && {type} ),
-        ...(size && {size}),
+        ...(type && { type }),
+        ...(size && { size }),
         ...(name && { name: { startsWith: name } }),
       },
       orderBy: sortBy
@@ -33,11 +33,10 @@ export class ProductsService {
         : undefined,
     });
   }
-  
 
   async findOne(id: number) {
     return await this.prisma.product.findUnique({
-      where: {id}
+      where: { id },
     });
   }
 
@@ -50,47 +49,44 @@ export class ProductsService {
 
   async remove(id: number) {
     return await this.prisma.product.delete({
-      where:{id}
+      where: { id },
     });
   }
 
-  async findLastSalesProducts(){
+  async findLastSalesProducts() {
     return await this.prisma.salesitens.findMany({
       orderBy: {
         sales: {
-          sales_date: 'desc'
-        }
+          sales_date: 'desc',
+        },
       },
-      take: 5,
-      include:{
+      include: {
         product: true,
         sales: {
           select: {
-            sales_date: true
-          }
-        }
-      }
-    })
+            sales_date: true,
+          },
+        },
+      },
+    });
   }
 
-  async findLastShoppingProducts(){
+  async findLastShoppingProducts() {
     return await this.prisma.shoppingitens.findMany({
       orderBy: {
         shopping: {
-          shopping_date: 'desc'
-        }
+          shopping_date: 'desc',
+        },
       },
-      take: 5,
-      include:{
+
+      include: {
         product: true,
         shopping: {
           select: {
-            shopping_date: true
-          }
-        }
-      }
-    })
+            shopping_date: true,
+          },
+        },
+      },
+    });
   }
-
-  
 }

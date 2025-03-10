@@ -100,7 +100,6 @@ export class ShoppingService {
 
   async findLatestShopping() {
     return await this.prisma.shopping.findMany({
-      take: 5,
       orderBy: {
         shopping_date: 'desc',
       },

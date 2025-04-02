@@ -78,8 +78,14 @@ export class SalesController {
     @Query('range') range?: string,
     @Query('month') month?: string,
   ) {
+    return this.getTotalValueSalesByPeriod.execute(range, month);
+  }
+
+  @Get('/values/general')
+  findTotalValueSalesByPeriodFromGeneral(@Query('month') month?: string) {
     return this.getSalesValuesByMonthUseCase.execute(month);
   }
+
   @Get('/values/products/:id')
   findTotalSalesValueProductsByPeriod(
     @Param('id') productId: string,

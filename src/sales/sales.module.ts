@@ -21,6 +21,7 @@ import { OverViewService } from 'src/overview/overview.service';
 import { JwtService } from '@nestjs/jwt';
 import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
 import { GetBestSalesOfMonthUseCase } from './usecases/get-best-sales-of-month.usecase';
+import { GetSalesValuesByMonthUseCase } from './usecases/general/get-sales-values-by-month.usecase';
 
 @Module({
   controllers: [SalesController],
@@ -45,6 +46,7 @@ import { GetBestSalesOfMonthUseCase } from './usecases/get-best-sales-of-month.u
     RegisterProfitUseCase,
     GetDailySalesUseCase,
     GetBestSalesOfMonthUseCase,
+    GetSalesValuesByMonthUseCase
   ],
 })
 export class SalesModule {}

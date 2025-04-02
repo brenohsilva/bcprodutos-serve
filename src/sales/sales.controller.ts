@@ -26,6 +26,7 @@ import { GetLastSalesUseCase } from './usecases/get-last-sales.usecase';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { GetDailySalesUseCase } from './usecases/get-daily-sales.usecase';
 import { GetBestSalesOfMonthUseCase } from './usecases/get-best-sales-of-month.usecase';
+import { GetSalesValuesByMonthUseCase } from './usecases/general/get-sales-values-by-month.usecase';
 @UseGuards(AuthGuard)
 @Controller('sales')
 export class SalesController {
@@ -44,6 +45,7 @@ export class SalesController {
     private readonly getLastSales: GetLastSalesUseCase,
     private readonly getDailySales: GetDailySalesUseCase,
     private readonly getBestSalesOfMonthUseCase: GetBestSalesOfMonthUseCase,
+    private readonly getSalesValuesByMonthUseCase: GetSalesValuesByMonthUseCase,
   ) {}
 
   @Post()
@@ -76,7 +78,7 @@ export class SalesController {
     @Query('range') range?: string,
     @Query('month') month?: string,
   ) {
-    return this.getTotalValueSalesByPeriod.execute(range, month);
+    return this.getSalesValuesByMonthUseCase.execute(month);
   }
   @Get('/values/products/:id')
   findTotalSalesValueProductsByPeriod(

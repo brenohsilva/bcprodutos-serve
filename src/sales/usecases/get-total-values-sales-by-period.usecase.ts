@@ -1,6 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SalesService } from '../sales.service';
-import { startOfMonth, subMonths, startOfWeek, endOfWeek } from 'date-fns';
+import {
+  startOfMonth,
+  subMonths,
+  startOfWeek,
+  endOfWeek,
+  endOfMonth,
+} from 'date-fns';
 
 @Injectable()
 export class GetTotalValueSalesByPeriodUseCase {
@@ -9,12 +15,11 @@ export class GetTotalValueSalesByPeriodUseCase {
   async execute(period: string, month?: string) {
     try {
       const today = new Date();
-      let currentPeriodStart: Date;
-      let currentPeriodEnd: Date;
-      let previousPeriodStart: Date;
-      let previousPeriodEnd: Date;
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth() + 1; // 1-12
 
       let baseDate = today;
+      let selectedMonth = currentMonth;
 
       if (month) {
         const monthNumber = parseInt(month, 10);
@@ -24,28 +29,37 @@ export class GetTotalValueSalesByPeriodUseCase {
             HttpStatus.BAD_REQUEST,
           );
         }
-        baseDate = new Date(
-          today.getFullYear(),
-          monthNumber - 1,
-          today.getDate(),
-        );
+        selectedMonth = monthNumber;
+        baseDate = new Date(currentYear, selectedMonth - 1, 1);
       }
+
+      let currentPeriodStart: Date;
+      let currentPeriodEnd: Date;
+      let previousPeriodStart: Date;
+      let previousPeriodEnd: Date;
 
       if (period === 'month') {
         currentPeriodStart = startOfMonth(baseDate);
-        currentPeriodEnd = new Date(
-          baseDate.getFullYear(),
-          baseDate.getMonth(),
-          today.getDate(), // Pegamos até o dia atual do mês
-        );
+
+        const isCurrentMonth =
+          selectedMonth === currentMonth &&
+          baseDate.getFullYear() === currentYear;
+
+        currentPeriodEnd = isCurrentMonth
+          ? new Date(
+              currentYear,
+              currentMonth - 1,
+              today.getDate(),
+              23,
+              59,
+              59,
+              999,
+            )
+          : endOfMonth(baseDate);
 
         const prevMonth = subMonths(baseDate, 1);
         previousPeriodStart = startOfMonth(prevMonth);
-        previousPeriodEnd = new Date(
-          prevMonth.getFullYear(),
-          prevMonth.getMonth(),
-          today.getDate(), // Pegamos até o mesmo dia do mês anterior
-        );
+        previousPeriodEnd = endOfMonth(prevMonth);
       }
 
       if (period === 'week') {
@@ -64,8 +78,6 @@ export class GetTotalValueSalesByPeriodUseCase {
         });
         previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 0 });
       }
-
-      currentPeriodEnd.setHours(23, 59, 59, 999);
 
       const currentPeriodData =
         await this.salesService.getTotalValueSalesByPeriod(

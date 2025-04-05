@@ -52,7 +52,7 @@ export class GetTotalSalesByPeriodUseCase {
       }
 
       if (period === 'week') {
-        currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 });
+        currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 1 });
         currentPeriodEnd = endOfWeek(baseDate, { weekStartsOn: 0 });
 
         const prevMonth = subMonths(baseDate, 1);
@@ -61,11 +61,10 @@ export class GetTotalSalesByPeriodUseCase {
           prevMonth.getMonth(),
           baseDate.getDate(),
         );
-
         previousPeriodStart = startOfWeek(prevMonthSameWeek, {
           weekStartsOn: 0,
         });
-        previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 0 });
+        previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 1 });
       }
 
       const currentPeriodData = await this.salesService.getTotalSalesByPeriod(

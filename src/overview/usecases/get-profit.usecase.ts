@@ -10,24 +10,29 @@ export class GetProfitUseCase {
       const now = new Date();
       const selectedYear = year && !isNaN(year) ? year : now.getFullYear();
       const selectedMonth = month && !isNaN(month) ? month : now.getMonth() + 1;
-      const today = now.getDate(); // Pega o dia atual do mês
-      // Datas do período atual (até o dia atual)
+      const today = now.getDate();
+
+      const isCurrentMonth =
+        selectedYear === now.getFullYear() &&
+        selectedMonth === now.getMonth() + 1;
+
       const firstDayOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
-      const todayOfMonth = new Date(selectedYear, selectedMonth - 1, today + 1);
-      
+      const endDayOfMonth = isCurrentMonth
+        ? new Date(selectedYear, selectedMonth - 1, today + 1)
+        : new Date(selectedYear, selectedMonth, 1); // 1º dia do próximo mês (exclusivo)
+
       // Busca os lucros do período atual
       const currentMonthProfits = await this.overViewService.findProfits(
         firstDayOfMonth,
-        todayOfMonth,
+        endDayOfMonth,
       );
-
 
       const currentMonthTotal = currentMonthProfits.reduce(
         (acc, profit) => acc + Number(profit.profit_day),
         0,
       );
 
-      // Datas do mesmo período no mês anterior
+      // Período do mês anterior
       const previousMonth = selectedMonth - 1 || 12;
       const previousYear =
         previousMonth === 12 ? selectedYear - 1 : selectedYear;
@@ -37,16 +42,11 @@ export class GetProfitUseCase {
         previousMonth - 1,
         1,
       );
-      const sameDayOfPreviousMonth = new Date(
-        previousYear,
-        previousMonth - 1,
-        today + 1,
-      );
+      const endDayOfPreviousMonth = new Date(previousYear, previousMonth, 1); // 1º dia do mês seguinte (exclusivo)
 
-      // Busca os lucros do mesmo período no mês anterior
       const previousMonthProfits = await this.overViewService.findProfits(
         firstDayOfPreviousMonth,
-        sameDayOfPreviousMonth,
+        endDayOfPreviousMonth,
       );
 
       const previousMonthTotal = previousMonthProfits.reduce(

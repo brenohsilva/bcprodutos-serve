@@ -14,58 +14,58 @@ export class GetTotalValueSalesByPeriodUseCase {
       let previousPeriodStart: Date;
       let previousPeriodEnd: Date;
 
-      if (period === 'month' || period === 'week') {
-        let baseDate = today;
+      let baseDate = today;
 
-        if (month) {
-          const monthNumber = parseInt(month, 10);
-          if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
-            throw new HttpException(
-              'Mês inválido. O valor deve estar entre 1 e 12.',
-              HttpStatus.BAD_REQUEST,
-            );
-          }
-          baseDate = new Date(
-            today.getFullYear(),
-            monthNumber - 1,
-            today.getDate(),
+      if (month) {
+        const monthNumber = parseInt(month, 10);
+        if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+          throw new HttpException(
+            'Mês inválido. O valor deve estar entre 1 e 12.',
+            HttpStatus.BAD_REQUEST,
           );
         }
-
-        if (period === 'month') {
-          currentPeriodStart = startOfMonth(baseDate);
-          currentPeriodEnd = new Date(
-            baseDate.getFullYear(),
-            baseDate.getMonth(),
-            today.getDate(), // Pegamos até o dia atual do mês
-          );
-
-          const prevMonth = subMonths(baseDate, 1);
-          previousPeriodStart = startOfMonth(prevMonth);
-          previousPeriodEnd = new Date(
-            prevMonth.getFullYear(),
-            prevMonth.getMonth(),
-            today.getDate(), // Pegamos até o mesmo dia do mês anterior
-          );
-        }
-
-        if (period === 'week') {
-          currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 }); // Domingo
-          currentPeriodEnd = endOfWeek(baseDate, { weekStartsOn: 0 });
-
-          const prevMonth = subMonths(baseDate, 1);
-          const prevMonthSameWeek = new Date(
-            prevMonth.getFullYear(),
-            prevMonth.getMonth(),
-            baseDate.getDate(),
-          );
-
-          previousPeriodStart = startOfWeek(prevMonthSameWeek, {
-            weekStartsOn: 0,
-          });
-          previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 0 });
-        }
+        baseDate = new Date(
+          today.getFullYear(),
+          monthNumber - 1,
+          today.getDate(),
+        );
       }
+
+      if (period === 'month') {
+        currentPeriodStart = startOfMonth(baseDate);
+        currentPeriodEnd = new Date(
+          baseDate.getFullYear(),
+          baseDate.getMonth(),
+          today.getDate(), // Pegamos até o dia atual do mês
+        );
+
+        const prevMonth = subMonths(baseDate, 1);
+        previousPeriodStart = startOfMonth(prevMonth);
+        previousPeriodEnd = new Date(
+          prevMonth.getFullYear(),
+          prevMonth.getMonth(),
+          today.getDate(), // Pegamos até o mesmo dia do mês anterior
+        );
+      }
+
+      if (period === 'week') {
+        currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 }); // Domingo
+        currentPeriodEnd = endOfWeek(baseDate, { weekStartsOn: 0 });
+
+        const prevMonth = subMonths(baseDate, 1);
+        const prevMonthSameWeek = new Date(
+          prevMonth.getFullYear(),
+          prevMonth.getMonth(),
+          baseDate.getDate(),
+        );
+
+        previousPeriodStart = startOfWeek(prevMonthSameWeek, {
+          weekStartsOn: 0,
+        });
+        previousPeriodEnd = endOfWeek(prevMonthSameWeek, { weekStartsOn: 0 });
+      }
+
+      currentPeriodEnd.setHours(23, 59, 59, 999);
 
       const currentPeriodData =
         await this.salesService.getTotalValueSalesByPeriod(

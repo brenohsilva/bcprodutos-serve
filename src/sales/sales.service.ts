@@ -66,22 +66,22 @@ export class SalesService {
     });
   }
 
-  async findAllSalesItens(){
+  async findAllSalesItens() {
     return this.prisma.salesitens.findMany({
       include: {
         sales: {
           select: {
-            sales_date: true
-          }
+            sales_date: true,
+          },
         },
         product: {
           select: {
             id: true,
-            name: true
-          }
-        }
-      }
-    })
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async findSalesByPeriod(beginning: Date, end: Date) {
@@ -154,11 +154,16 @@ export class SalesService {
         },
       },
     });
-    return {
-  bruto: total._sum.total_gross_value ? total._sum.total_gross_value.toFixed(2) : "0.00",
-  liquido: total._sum.total_net_value ? total._sum.total_net_value.toFixed(2) : "0.00",
-};
 
+    
+    return {
+      bruto: total._sum.total_gross_value
+        ? total._sum.total_gross_value.toFixed(2)
+        : '0.00',
+      liquido: total._sum.total_net_value
+        ? total._sum.total_net_value.toFixed(2)
+        : '0.00',
+    };
   }
 
   async getTotalValueSales() {

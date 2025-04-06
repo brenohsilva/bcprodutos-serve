@@ -8,20 +8,24 @@ export class GetProfitUseCase {
   async execute(month?: number, year?: number) {
     try {
       const now = new Date();
+      const today = now.getDate();
+
+      const isMonthYearProvided = !!month || !!year;
+
       const selectedYear = year && !isNaN(year) ? year : now.getFullYear();
       const selectedMonth = month && !isNaN(month) ? month : now.getMonth() + 1;
-      const today = now.getDate();
 
       const isCurrentMonth =
         selectedYear === now.getFullYear() &&
         selectedMonth === now.getMonth() + 1;
 
       const firstDayOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
-      const endDayOfMonth = isCurrentMonth
-        ? new Date(selectedYear, selectedMonth - 1, today + 1)
-        : new Date(selectedYear, selectedMonth, 1); // 1º dia do próximo mês (exclusivo)
 
-      // Busca os lucros do período atual
+      const endDayOfMonth = isMonthYearProvided
+        ? new Date(selectedYear, selectedMonth, 1) // próximo mês (exclusivo)
+        : new Date(selectedYear, selectedMonth - 1, today + 1); // até o dia atual (exclusivo)
+
+      // Lucros do mês atual
       const currentMonthProfits = await this.overViewService.findProfits(
         firstDayOfMonth,
         endDayOfMonth,
@@ -32,7 +36,7 @@ export class GetProfitUseCase {
         0,
       );
 
-      // Período do mês anterior
+      // Mês anterior
       const previousMonth = selectedMonth - 1 || 12;
       const previousYear =
         previousMonth === 12 ? selectedYear - 1 : selectedYear;
@@ -42,7 +46,10 @@ export class GetProfitUseCase {
         previousMonth - 1,
         1,
       );
-      const endDayOfPreviousMonth = new Date(previousYear, previousMonth, 1); // 1º dia do mês seguinte (exclusivo)
+
+      const endDayOfPreviousMonth = isMonthYearProvided
+        ? new Date(previousYear, previousMonth, 1)
+        : new Date(previousYear, previousMonth - 1, today + 1); // até o mesmo dia do mês anterior
 
       const previousMonthProfits = await this.overViewService.findProfits(
         firstDayOfPreviousMonth,

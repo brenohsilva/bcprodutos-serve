@@ -15,14 +15,15 @@ export class GetTotalValueShoppingByPeriodUseCase {
   async execute(period: string, month?: string) {
     try {
       const today = new Date();
-      let currentPeriodStart: Date;
-      let currentPeriodEnd: Date;
-      let previousPeriodStart: Date;
-      let previousPeriodEnd: Date;
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth() + 1;
 
       let baseDate = today;
+      let selectedMonth = currentMonth;
 
-      if (month) {
+      const isMonthProvided = !!month;
+
+      if (isMonthProvided) {
         const monthNumber = parseInt(month, 10);
         if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
           throw new HttpException(
@@ -30,20 +31,49 @@ export class GetTotalValueShoppingByPeriodUseCase {
             HttpStatus.BAD_REQUEST,
           );
         }
-        baseDate = new Date(
-          today.getFullYear(),
-          monthNumber - 1,
-          today.getDate(),
-        );
+        selectedMonth = monthNumber;
+        baseDate = new Date(currentYear, selectedMonth - 1, today.getDate());
       }
+
+      let currentPeriodStart: Date;
+      let currentPeriodEnd: Date;
+      let previousPeriodStart: Date;
+      let previousPeriodEnd: Date;
 
       if (period === 'month') {
         currentPeriodStart = startOfMonth(baseDate);
-        currentPeriodEnd = endOfMonth(baseDate);
 
-        const prevMonth = subMonths(baseDate, 1);
-        previousPeriodStart = startOfMonth(prevMonth);
-        previousPeriodEnd = endOfMonth(prevMonth);
+        if (isMonthProvided) {
+          // Mês informado: pegar mês inteiro
+          currentPeriodEnd = endOfMonth(baseDate);
+
+          const prevMonth = subMonths(baseDate, 1);
+          previousPeriodStart = startOfMonth(prevMonth);
+          previousPeriodEnd = endOfMonth(prevMonth);
+        } else {
+          // Mês não informado: pegar do início do mês até hoje
+          currentPeriodEnd = new Date(
+            currentYear,
+            currentMonth - 1,
+            today.getDate(),
+            23,
+            59,
+            59,
+            999,
+          );
+
+          const prevMonth = subMonths(baseDate, 1);
+          previousPeriodStart = startOfMonth(prevMonth);
+          previousPeriodEnd = new Date(
+            prevMonth.getFullYear(),
+            prevMonth.getMonth(),
+            today.getDate(),
+            23,
+            59,
+            59,
+            999,
+          );
+        }
       }
 
       if (period === 'week') {

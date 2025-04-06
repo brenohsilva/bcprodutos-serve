@@ -21,7 +21,9 @@ export class GetTotalValueSalesByPeriodUseCase {
       let baseDate = today;
       let selectedMonth = currentMonth;
 
-      if (month) {
+      const isMonthProvided = !!month;
+
+      if (isMonthProvided) {
         const monthNumber = parseInt(month, 10);
         if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
           throw new HttpException(
@@ -45,25 +47,40 @@ export class GetTotalValueSalesByPeriodUseCase {
           selectedMonth === currentMonth &&
           baseDate.getFullYear() === currentYear;
 
-        currentPeriodEnd = isCurrentMonth
-          ? new Date(
-              currentYear,
-              currentMonth - 1,
-              today.getDate(),
-              23,
-              59,
-              59,
-              999,
-            )
-          : endOfMonth(baseDate);
+        if (isMonthProvided) {
+          // Mês informado => pegar o mês inteiro
+          currentPeriodEnd = endOfMonth(baseDate);
+          const prevMonth = subMonths(baseDate, 1);
+          previousPeriodStart = startOfMonth(prevMonth);
+          previousPeriodEnd = endOfMonth(prevMonth);
+        } else {
+          // Mês NÃO informado => pegar até o dia atual
+          currentPeriodEnd = new Date(
+            currentYear,
+            currentMonth - 1,
+            today.getDate(),
+            23,
+            59,
+            59,
+            999,
+          );
 
-        const prevMonth = subMonths(baseDate, 1);
-        previousPeriodStart = startOfMonth(prevMonth);
-        previousPeriodEnd = endOfMonth(prevMonth);
+          const prevMonth = subMonths(baseDate, 1);
+          previousPeriodStart = startOfMonth(prevMonth);
+          previousPeriodEnd = new Date(
+            prevMonth.getFullYear(),
+            prevMonth.getMonth(),
+            today.getDate(),
+            23,
+            59,
+            59,
+            999,
+          );
+        }
       }
 
       if (period === 'week') {
-        currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 }); // Domingo
+        currentPeriodStart = startOfWeek(baseDate, { weekStartsOn: 0 });
         currentPeriodEnd = endOfWeek(baseDate, { weekStartsOn: 0 });
 
         const prevMonth = subMonths(baseDate, 1);
